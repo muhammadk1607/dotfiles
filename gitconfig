@@ -1,0 +1,8 @@
+# global setting
+[core]
+	editor = code -w
+[commit]
+	template = ~/.gitmessage
+[user]
+	email = muhammadkhan1607@gmail.com
+	name = mbm_1607
