@@ -1,4 +1,6 @@
 # global setting
+[alias]
+	graph = log --all --graph --decorate --oneline
 [core]
 	editor = code -w
 [commit]
