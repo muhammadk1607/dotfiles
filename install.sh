@@ -1,14 +1,16 @@
  #!/usr/bin/env bash
 ############################
-# .make.sh
 # This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
 ############################
 
 ########## Variables
 
-dir=~/dotfiles                    # dotfiles directory
-olddir=~/dotfiles_old             # old dotfiles backup directory
-files="bash_aliases gitconfig gitmessage"    # list of files/folders to symlink in homedir
+# dotfiles directory
+dir=~/dotfiles
+# old dotfiles backup directory
+olddir=~/dotfiles_old
+# list of files/folders to symlink in homedir
+files="bash_aliases gitconfig gitmessage tmux.conf"
 
 ##########
 
@@ -22,10 +24,17 @@ echo "Changing to the $dir directory"
 cd $dir
 echo "...done"
 
+
+# Clone tmux package manager
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 # move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks
 for file in $files; do
-    echo "Moving any existing dotfiles from ~ to $olddir"
-    mv ~/.$file ~/dotfiles_old/
-    echo "Creating symlink to $file in home directory."
-    ln -s $dir/$file ~/.$file
+	echo "Moving any existing dotfiles from ~ to $olddir"
+	mv ~/.$file ~/dotfiles_old/
+	echo "Creating symlink to $file in home directory."
+	ln -s $dir/$file ~/.$file
 done
+
+# Run the tmux sourcing
+tmux source ~/.tmux.conf
