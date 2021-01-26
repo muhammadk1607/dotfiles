@@ -14,7 +14,6 @@ olddir=~/dotfiles_old
 # list of files/folders to symlink in homedir
 files=".bashrc .gitconfig .gitmessage"
 
-##########
 
 # create dotfiles_old in homedir
 echo "Creating $olddir for backup of any existing dotfiles in ~"
