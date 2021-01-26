@@ -1,9 +1,8 @@
 # .dotfiles
-	Simple barebones dotfiles repository for tmux, bash, and git.
+
+Dotfiles repository for bash aliases, tmux and git configuration and installation scripts.
 
 ## Installation
-
-I would not recommend using these dotfiles as they are pretty barebones and just for my personal use.
 
 All you need to do is clone the repository in your home ~ directory inside the dotfiles folder.
 
@@ -18,4 +17,4 @@ This will alse clone the tmux package manager and run the tmux source command to
 ### Request
 
 If you feel that I am doing a big mistake somewhere in these dotfiles, I probably am.
-I am complete beginner so please send me feedback if you read this and also please don't use these.
+I am complete beginner so please send me feedback if you read this I would greatly appreciate it.
