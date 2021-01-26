@@ -7,10 +7,12 @@
 
 # dotfiles directory
 dir=~/dotfiles
+
 # old dotfiles backup directory
 olddir=~/dotfiles_old
+
 # list of files/folders to symlink in homedir
-files="bash_aliases gitconfig gitmessage tmux.conf"
+files=".bashrc .gitconfig .gitmessage .tmux.conf"
 
 ##########
 
@@ -33,7 +35,7 @@ for file in $files; do
 	echo "Moving any existing dotfiles from ~ to $olddir"
 	mv ~/.$file ~/dotfiles_old/
 	echo "Creating symlink to $file in home directory."
-	ln -s $dir/$file ~/.$file
+	ln -s $dir/$file ~/$file
 done
 
 # Run the tmux sourcing
