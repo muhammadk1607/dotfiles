@@ -1,6 +1,6 @@
 # .dotfiles
 
-Dotfiles repository for bash, tmux and git configuration.
+Dotfiles repository for bash and git configuration.
 
 ## Installation
 

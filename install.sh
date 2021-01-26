@@ -12,7 +12,7 @@ dir=~/dotfiles
 olddir=~/dotfiles_old
 
 # list of files/folders to symlink in homedir
-files=".bashrc .gitconfig .gitmessage .tmux.conf"
+files=".bashrc .gitconfig .gitmessage"
 
 ##########
 
@@ -26,10 +26,6 @@ echo "Changing to the $dir directory"
 cd $dir
 echo "...done"
 
-
-# Clone tmux package manager
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-
 # move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks
 for file in $files; do
 	echo "Moving any existing dotfiles from ~ to $olddir"
@@ -37,6 +33,3 @@ for file in $files; do
 	echo "Creating symlink to $file in home directory."
 	ln -s $dir/$file ~/$file
 done
-
-# Run the tmux sourcing
-tmux source ~/.tmux.conf
