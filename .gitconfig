@@ -3,6 +3,7 @@
 	graph = log --all --graph --decorate --oneline
 [core]
 	editor = code -w
+	excludesfile = ~/.gitignore
 [commit]
 	template = ~/.gitmessage
 [user]
