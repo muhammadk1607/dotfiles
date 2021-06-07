@@ -8,7 +8,7 @@
 ########## Variables
 
 # list of files/folders to assume unchanged
-files="Gemfile.lock .gitignore $(git ls-files solr/development | tr '\n' ' ')"
+files="db/schema.rb Gemfile.lock .gitignore $(git ls-files solr/development | tr '\n' ' ')"
 
 git update-index --assume-unchanged $files
 
@@ -25,3 +25,6 @@ then
 else
   echo "git-ignore.bash" >> .gitignore
 fi
+
+rm Gemfile.lock
+bundle install
