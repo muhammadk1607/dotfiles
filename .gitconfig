@@ -9,3 +9,5 @@
 [user]
 	email = muhammadkhan1607@gmail.com
 	name = mbm_1607
+[pull]
+	rebase = false
