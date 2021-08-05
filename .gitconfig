@@ -1,6 +1,8 @@
 # global setting
 [alias]
 	graph = log --all --graph --decorate --oneline
+	assume-unchanged = update-index --assume-unchanged
+	no-assume-unchanged = update-index --no-assume-unchanged
 [core]
 	editor = code -w
 	excludesfile = ~/.gitignore
