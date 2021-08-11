@@ -74,5 +74,9 @@ mkcdir ()
 # 04. Ruby                                                                   #
 ##############################################################################
 
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
+
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
