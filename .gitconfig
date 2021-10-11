@@ -13,3 +13,5 @@
 	name = mbm_1607
 [pull]
 	rebase = false
+[init]
+	defaultBranch = master
