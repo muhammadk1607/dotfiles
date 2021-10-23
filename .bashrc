@@ -16,7 +16,8 @@ YELLOW='\[\e[1;33m\]'
 BLUE='\[\e[0;36m\]'
 PURPLE='\[\e[1;34m\]'
 COLOR_RESET='\[\e[0m\]'
-LIGHT_PURPLE='\[\e[0;95m'
+GREEN='\[\e[1;32m'
+RUBY_VERSION='\[\e[1;31m\]'
 
 function git_prompt() {
 	# GIT PROMPT
@@ -44,13 +45,17 @@ function git_prompt() {
 	fi
 }
 
-function dir_details() {
-	# Get number of files and the total space occupied
-	echo "\$(/bin/ls -1 | /usr/bin/wc -l | /bin/sed 's: ::g') files, \$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')b"
+function node_version() {
+	# Get the node version currently in use
+	echo "$BLUE─[$COLOR_RESET$GREEN⬢  - $(nvm version | cut -d'v' -f2-)$COLOR_RESET$BLUE]"
+}
+
+function ruby_version() {
+	echo "$BLUE─[$COLOR_RESET${RUBY_VERSION}ruby - $(rbenv version | cut -d' ' -f1)$COLOR_RESET$BLUE]"
 }
 
 function prompt() {
-	PS1="\n$BLUE┌─[$COLOR_RESET$YELLOW\u$COLOR_RESET$BLUE @ $COLOR_RESET$YELLOW\h$COLOR_RESET$BLUE]─[$COLOR_RESET$PURPLE\w$COLOR_RESET$BLUE]$BLUE─[$COLOR_RESET$LIGHT_PURPLE$(dir_details)$COLOR_RESET$BLUE]$(git_prompt)$COLOR_RESET\n$BLUE└─[$COLOR_RESET$WHITE\$$COLOR_RESET$BLUE]─› $COLOR_RESET"
+	PS1="\n$BLUE┌─[$COLOR_RESET$YELLOW\u$COLOR_RESET$BLUE @ $COLOR_RESET$YELLOW\h$COLOR_RESET$BLUE]─[$COLOR_RESET$PURPLE\w$COLOR_RESET$BLUE]$(git_prompt)$(node_version)$(ruby_version)$COLOR_RESET\n$BLUE└─[$COLOR_RESET$WHITE\$$COLOR_RESET$BLUE]─› $COLOR_RESET"
 }
 
 PROMPT_COMMAND=prompt
@@ -90,3 +95,7 @@ fi
 
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
