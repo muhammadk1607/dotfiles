@@ -54,7 +54,7 @@ function node_version() {
 }
 
 function ruby_version() {
-	echo "$BLUE─[$COLOR_RESET${RUBY_VERSION}ruby - $(rbenv version | cut -d' ' -f1)$COLOR_RESET$BLUE]"
+	echo "$BLUE─[$COLOR_RESET${RUBY_VERSION}⬘   - $(rbenv version | cut -d' ' -f1)$COLOR_RESET$BLUE]"
 }
 
 function python_version() {
