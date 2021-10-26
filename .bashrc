@@ -16,8 +16,11 @@ YELLOW='\[\e[1;33m\]'
 BLUE='\[\e[0;36m\]'
 PURPLE='\[\e[1;34m\]'
 COLOR_RESET='\[\e[0m\]'
-GREEN='\[\e[1;32m'
+NODE='\[\e[1;32m'
 RUBY_VERSION='\[\e[1;31m\]'
+PYTHON='\[\e[1;32m\]'
+PYTHON='\[\e[1;36m\]'
+
 
 function git_prompt() {
 	# GIT PROMPT
@@ -47,15 +50,19 @@ function git_prompt() {
 
 function node_version() {
 	# Get the node version currently in use
-	echo "$BLUE─[$COLOR_RESET$GREEN⬢  - $(nvm version | cut -d'v' -f2-)$COLOR_RESET$BLUE]"
+	echo "$BLUE─[$COLOR_RESET$NODE⬢  - $(nvm version | cut -d'v' -f2-)$COLOR_RESET$BLUE]"
 }
 
 function ruby_version() {
 	echo "$BLUE─[$COLOR_RESET${RUBY_VERSION}ruby - $(rbenv version | cut -d' ' -f1)$COLOR_RESET$BLUE]"
 }
 
+function python_version() {
+	echo "$BLUE─[$COLOR_RESET${PYTHON}🐍 - $(python --version | cut -d' ' -f2-)$COLOR_RESET$BLUE]"
+}
+
 function prompt() {
-	PS1="\n$BLUE┌─[$COLOR_RESET$YELLOW\u$COLOR_RESET$BLUE @ $COLOR_RESET$YELLOW\h$COLOR_RESET$BLUE]─[$COLOR_RESET$PURPLE\w$COLOR_RESET$BLUE]$(git_prompt)$(node_version)$(ruby_version)$COLOR_RESET\n$BLUE└─[$COLOR_RESET$WHITE\$$COLOR_RESET$BLUE]─› $COLOR_RESET"
+	PS1="\n$BLUE┌─[$COLOR_RESET$YELLOW\u$COLOR_RESET$BLUE @ $COLOR_RESET$YELLOW\h$COLOR_RESET$BLUE]─[$COLOR_RESET$PURPLE\w$COLOR_RESET$BLUE]$(git_prompt)$(node_version)$(ruby_version)$(python_version)$COLOR_RESET\n$BLUE└─[$COLOR_RESET$WHITE\$$COLOR_RESET$BLUE]─› $COLOR_RESET"
 }
 
 PROMPT_COMMAND=prompt
