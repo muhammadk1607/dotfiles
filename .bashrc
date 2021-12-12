@@ -80,6 +80,7 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias ssh-hosts="grep -P \"^Host ([^*]+)$\" $HOME/.ssh/config | sed 's/Host //'"
+alias public-ip="curl ipinfo.io/ip"
 
 
 ##############################################################################
