@@ -3,7 +3,7 @@
 #   01. General ................. General Bash behavior                      #
 #   02. Aliases ................. Aliases                                    #
 #   03. Functions ............... Helper functions                           #
-#   04. Ruby .................... ruby installation                          #
+#   04. Setup Environments .................... rbenv, nvm and bash setup    #
 ##############################################################################
 
 ##############################################################################
@@ -93,12 +93,8 @@ mkcdir ()
 }
 
 ##############################################################################
-# 04. Ruby                                                                   #
+# 04. Setup Environments                                                     #
 ##############################################################################
-
-if [ -f ~/.git-completion.bash ]; then
-  . ~/.git-completion.bash
-fi
 
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
@@ -106,3 +102,11 @@ eval "$(rbenv init -)"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+if [ -f ~/.git-completion.bash ]; then
+	. ~/.git-completion.bash
+fi
+
+if [ -f ~/.bash.profile ]; then
+	. ~/.bash.profile
+fi

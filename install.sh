@@ -1,4 +1,4 @@
- #!/usr/bin/env bash
+#!/usr/bin/env bash
 ############################
 # This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
 ############################
@@ -12,7 +12,7 @@ dir=~/dotfiles
 olddir=~/dotfiles_old
 
 # list of files/folders to symlink in homedir
-files=".bashrc .gitconfig .gitmessage .gitignore"
+files=".bashrc .gitconfig .gitmessage .gitignore .bash.profile"
 
 
 # create dotfiles_old in homedir
