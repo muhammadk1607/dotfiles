@@ -111,3 +111,5 @@ fi
 if [ -f ~/.bash.profile ]; then
 	. ~/.bash.profile
 fi
+
+eval "$(direnv hook bash)"

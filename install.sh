@@ -34,3 +34,5 @@ for file in $files; do
 done
 
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
+
+sudo apt install direnv
