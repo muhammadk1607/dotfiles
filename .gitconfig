@@ -3,6 +3,8 @@
 	graph = log --all --graph --decorate --oneline
 	assume-unchanged = update-index --assume-unchanged
 	no-assume-unchanged = update-index --no-assume-unchanged
+[branch]
+	autosetupmerge = always
 [core]
 	editor = code -w
 	excludesfile = ~/.gitignore
