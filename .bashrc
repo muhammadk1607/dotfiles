@@ -3,7 +3,7 @@
 #   01. General ................. General Bash behavior                      #
 #   02. Aliases ................. Aliases                                    #
 #   03. Functions ............... Helper functions                           #
-#   04. Setup Environments .................... rbenv, nvm and bash setup    #
+#   04. Setup Environments .................... rbenv and bash setup    #
 ##############################################################################
 
 ##############################################################################
@@ -50,7 +50,7 @@ function git_prompt() {
 
 function node_version() {
 	# Get the node version currently in use
-	echo "$BLUE─[$COLOR_RESET$NODE⬢  - $(nvm version | cut -d'v' -f2-)$COLOR_RESET$BLUE]"
+	echo "$BLUE─[$COLOR_RESET$NODE⬢  - $(node -v | cut -d'v' -f2-)$COLOR_RESET$BLUE]"
 }
 
 function ruby_version() {
@@ -80,8 +80,6 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias ssh-hosts="grep -P \"^Host ([^*]+)$\" $HOME/.ssh/config | sed 's/Host //'"
-alias public-ip="curl ipinfo.io/ip"
-
 
 ##############################################################################
 # 03. Functions                                                              #
@@ -97,16 +95,22 @@ killport() {
 	sudo kill -9 $(sudo fuser -n tcp $1 2> /dev/null);
 }
 
+# Get all local ips
+local_ip() {
+	ifconfig | grep "inet" | grep -Fv 127.0.0.1 | awk '{print $2}'
+}
+
+# Get public ip
+public_ip() {
+	curl ipinfo.io/ip
+}
+
 ##############################################################################
 # 04. Setup Environments                                                     #
 ##############################################################################
 
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 if [ -f ~/.git-completion.bash ]; then
 	. ~/.git-completion.bash
