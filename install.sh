@@ -33,6 +33,8 @@ for file in $files; do
 	ln -s $dir/$file ~/$file
 done
 
+# Install git completion script
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
 
-sudo apt install direnv
+# Install apt packages
+sudo apt install direnv httpie bat

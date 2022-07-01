@@ -79,6 +79,7 @@ alias update='sudo apt update && sudo apt full-upgrade -y --allow-downgrades --f
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias bat='batcat'
 alias ssh-hosts="grep -P \"^Host ([^*]+)$\" $HOME/.ssh/config | sed 's/Host //'"
 
 ##############################################################################
