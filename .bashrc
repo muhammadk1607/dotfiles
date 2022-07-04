@@ -122,3 +122,6 @@ if [ -f ~/.bash.profile ]; then
 fi
 
 eval "$(direnv hook bash)"
+
+export DENO_INSTALL="/home/muhammad/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"

@@ -38,3 +38,9 @@ curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-com
 
 # Install apt packages
 sudo apt install direnv httpie bat
+
+# Install Deno
+if ! command -v deno &> /dev/null
+then
+	curl -fsSL https://deno.land/install.sh | sh
+fi
