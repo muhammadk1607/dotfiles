@@ -123,5 +123,5 @@ fi
 
 eval "$(direnv hook bash)"
 
-export DENO_INSTALL="/home/muhammad/.deno"
+export DENO_INSTALL="$HOME/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
