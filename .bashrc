@@ -117,6 +117,10 @@ if [ -f ~/.git-completion.bash ]; then
 	. ~/.git-completion.bash
 fi
 
+if [ -f ~/.ssh-completion.bash ]; then
+	. ~/.ssh-completion.bash
+fi
+
 if [ -f ~/.bash.profile ]; then
 	. ~/.bash.profile
 fi
