@@ -12,7 +12,7 @@ dir=~/dotfiles
 olddir=~/dotfiles_old
 
 # list of files/folders to symlink in homedir
-files=".bashrc .gitconfig .gitmessage .gitignore .bash.profile"
+files=".bashrc .gitconfig .gitmessage .gitignore .bash.profile .ssh-completion.bash"
 
 
 # create dotfiles_old in homedir
