@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 ############################
 # This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
+# It also installs the system programming essentials for myself
 ############################
 
 ########## Variables
@@ -37,7 +38,28 @@ done
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
 
 # Install apt packages
-sudo apt install direnv httpie bat
+sudo apt install direnv httpie bat python-is-python3 tilix gcc make libssl-dev libreadline-dev zlib1g-dev libsqlite3-dev
+
+# Install nvm and node 16
+if ! command -v nvm &> /dev/null
+then
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+  source ~/.bashrc
+  nvm install 16
+fi
+
+# Install rbenv and latest ruby
+if ! command -v rbenv &> /dev/null
+then
+  git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+  source ~/.bashrc
+  mkdir -p "$(rbenv root)"/plugins
+  git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
+  source ~/.bashrc
+  rbenv install 3.1.2 --verbose
+  rbenv global 3.1.2
+  gem install rails bundler
+fi
 
 # Install Deno
 if ! command -v deno &> /dev/null
