@@ -52,7 +52,7 @@ then
   corepack prepare pnpm@latest --activate
 
   # Install global npm packages
-  pnpm install --global create-react-app tldr
+  pnpm install --global create-react-app tldr concurrently
 fi
 
 # Install rbenv and latest ruby
