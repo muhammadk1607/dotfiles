@@ -49,7 +49,7 @@ then
   source ~/.bashrc
   corepack enable yarn
   corepack enable pnpm
-  corepack prepare pnpm@7.12.1 --activate
+  corepack prepare pnpm@latest --activate
 
   # Install global npm packages
   pnpm install --global create-react-app tldr

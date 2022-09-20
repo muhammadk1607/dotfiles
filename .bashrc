@@ -75,7 +75,7 @@ export EDITOR="code -w"
 
 alias install-postman-deb='curl https://gist.githubusercontent.com/SanderTheDragon/1331397932abaa1d6fbbf63baed5f043/raw/postman-deb.sh | sh'
 alias apt-update='sudo apt update && sudo apt full-upgrade -y --allow-downgrades --fix-missing && sudo apt autoremove'
-alias node-update='nvm-update lts/* && nvm-update node && yarn global upgrade'
+alias node-update='nvm-update lts/* && nvm-update node && corepack prepare pnpm@latest --activate && yarn global upgrade'
 # simple update alias
 alias update='apt-update && install-postman-deb && node-update'
 # some more ls aliases
