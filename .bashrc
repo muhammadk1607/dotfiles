@@ -73,15 +73,19 @@ export EDITOR="code -w"
 # 02. Aliases                                                                #
 ##############################################################################
 
+alias install-postman-deb='curl https://gist.githubusercontent.com/SanderTheDragon/1331397932abaa1d6fbbf63baed5f043/raw/postman-deb.sh | sh'
+alias apt-update='sudo apt update && sudo apt full-upgrade -y --allow-downgrades --fix-missing && sudo apt autoremove'
+alias node-update='nvm-update lts/* && nvm-update node && yarn global upgrade'
 # simple update alias
-alias update='sudo apt update && sudo apt full-upgrade -y --allow-downgrades --fix-missing && sudo apt autoremove && yarn global upgrade'
+alias update='apt-update && install-postman-deb && node-update'
 # some more ls aliases
 alias ll='ls -alF --color=auto'
 alias la='ls -A --color=auto'
 alias l='ls -CF --color=auto'
 alias ls='ls --color=auto'
-alias bat='batcat'
 alias ssh-hosts="grep -P \"^Host ([^*]+)$\" $HOME/.ssh/config | sed 's/Host //'"
+alias apti="apt list --installed"
+alias pn='pnpm'
 
 ##############################################################################
 # 03. Functions                                                              #
@@ -105,6 +109,11 @@ local_ip() {
 # Get public ip
 public_ip() {
 	curl ipinfo.io/ip
+}
+
+# update nvm version
+nvm-update() {
+	nvm install "$1" --reinstall-packages-from="$1"
 }
 
 ##############################################################################
