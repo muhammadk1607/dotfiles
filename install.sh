@@ -40,7 +40,7 @@ curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-com
 # Install apt packages
 sudo apt install direnv httpie bat python-is-python3 tilix gcc make libssl-dev libreadline-dev zlib1g-dev libsqlite3-dev gnome-tweaks
 
-# Install nvm and node 16
+# Install nvm and latest node
 if ! command -v nvm &> /dev/null
 then
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
@@ -49,6 +49,10 @@ then
   source ~/.bashrc
   corepack enable yarn
   corepack enable pnpm
+  corepack prepare pnpm@7.12.1 --activate
+
+  # Install global npm packages
+  pnpm install --global create-react-app tldr
 fi
 
 # Install rbenv and latest ruby
