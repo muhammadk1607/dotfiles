@@ -50,9 +50,6 @@ then
   corepack enable yarn
   corepack enable pnpm
   corepack prepare pnpm@latest --activate
-
-  # Install global npm packages
-  pnpm install --global create-react-app tldr concurrently
 fi
 
 # Install rbenv and latest ruby
@@ -73,3 +70,7 @@ if ! command -v deno &> /dev/null
 then
 	curl -fsSL https://deno.land/install.sh | sh
 fi
+
+# Install global packages
+NPM_PACKAGES="nodemon npm-check electron eslint tldr jsdoc ngrok eslint-plugin-jsdoc vsce typescript @svgr/cli expo-cli ts-node dotenv-vault npkill stylelint stylelint-config-standard stylelint-config-standard-scss"
+npm install --global $NPM_PACKAGES
