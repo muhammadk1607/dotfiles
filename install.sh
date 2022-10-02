@@ -74,3 +74,6 @@ fi
 # Install global packages
 NPM_PACKAGES="nodemon npm-check electron eslint tldr jsdoc ngrok eslint-plugin-jsdoc vsce typescript @svgr/cli expo-cli ts-node dotenv-vault npkill stylelint stylelint-config-standard stylelint-config-standard-scss"
 npm install --global $NPM_PACKAGES
+
+# Install postman
+install-postman-deb

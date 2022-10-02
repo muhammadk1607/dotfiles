@@ -77,7 +77,7 @@ alias install-postman-deb='curl https://gist.githubusercontent.com/SanderTheDrag
 alias apt-update='sudo apt update && sudo apt full-upgrade -y --allow-downgrades --fix-missing && sudo apt autoremove'
 alias node-update='nvm-update lts/* && nvm-update node && corepack prepare pnpm@latest --activate && yarn global upgrade'
 # simple update alias
-alias update='apt-update && install-postman-deb && node-update'
+alias update='apt-update && node-update'
 # some more ls aliases
 alias ll='ls -alF --color=auto'
 alias la='ls -A --color=auto'
