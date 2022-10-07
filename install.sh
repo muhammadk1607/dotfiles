@@ -76,4 +76,4 @@ NPM_PACKAGES="nodemon npm-check electron eslint tldr jsdoc ngrok eslint-plugin-j
 npm install --global $NPM_PACKAGES
 
 # Install postman
-install-postman-deb
+curl https://gist.githubusercontent.com/SanderTheDragon/1331397932abaa1d6fbbf63baed5f043/raw/postman-deb.sh | sh
