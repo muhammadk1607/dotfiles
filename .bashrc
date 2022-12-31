@@ -86,6 +86,7 @@ alias ls='ls --color=auto'
 alias ssh-hosts="grep -P \"^Host ([^*]+)$\" $HOME/.ssh/config | sed 's/Host //'"
 alias apti="apt list --installed"
 alias pn='pnpm'
+alias proton='protonvpn-cli'
 
 ##############################################################################
 # 03. Functions                                                              #
