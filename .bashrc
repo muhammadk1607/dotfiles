@@ -74,10 +74,8 @@ export EDITOR="code -w"
 ##############################################################################
 
 alias install-postman-deb='curl https://gist.githubusercontent.com/SanderTheDragon/1331397932abaa1d6fbbf63baed5f043/raw/postman-deb.sh | sh'
-alias apt-update='sudo apt update && sudo apt full-upgrade -y --allow-downgrades --fix-missing && sudo apt autoremove'
-alias node-update='nvm-update lts/* && nvm-update node && corepack prepare pnpm@latest --activate && yarn global upgrade'
 # simple update alias
-alias update='apt-update && node-update'
+alias update='sudo apt update && sudo apt full-upgrade -y --allow-downgrades --fix-missing && sudo apt autoremove'
 # some more ls aliases
 alias ll='ls -alF --color=auto'
 alias la='ls -A --color=auto'
@@ -114,7 +112,12 @@ public_ip() {
 
 # update nvm version
 nvm-update() {
-	nvm install "$1" --reinstall-packages-from="$1"
+	nvm install "$1" --latest-npm --reinstall-packages-from="$2"
+  nvm uninstall "$2"
+  corepack enable yarn
+  corepack enable pnpm
+  corepack prepare pnpm@latest --activate
+  nvm use default
 }
 
 ##############################################################################

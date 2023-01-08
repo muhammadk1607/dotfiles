@@ -72,8 +72,15 @@ then
 fi
 
 # Install global packages
-NPM_PACKAGES="nodemon npm-check electron eslint tldr jsdoc ngrok eslint-plugin-jsdoc vsce typescript @svgr/cli expo-cli ts-node dotenv-vault npkill stylelint stylelint-config-standard stylelint-config-standard-scss"
-npm install --global $NPM_PACKAGES
+npm install -g nodemon npm-check electron eslint tldr jsdoc ngrok eslint-plugin-jsdoc vsce typescript @svgr/cli expo-cli ts-node dotenv-vault npkill stylelint stylelint-config-standard stylelint-config-standard-scss
 
 # Install postman
 curl https://gist.githubusercontent.com/SanderTheDragon/1331397932abaa1d6fbbf63baed5f043/raw/postman-deb.sh | sh
+
+# Install gh cli through .deb
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg &&
+	sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg &&
+	echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null &&
+	sudo apt update &&
+	sudo apt install gh -y
+gh extension install mislav/gh-license
