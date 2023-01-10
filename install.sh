@@ -38,7 +38,7 @@ done
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
 
 # Install apt packages
-sudo apt install direnv httpie bat python-is-python3 tilix gcc make libssl-dev libreadline-dev zlib1g-dev libsqlite3-dev gnome-tweaks ffmpeg libmagickwand-dev
+sudo apt install -y direnv httpie bat python-is-python3 tilix gcc make libssl-dev libreadline-dev zlib1g-dev libsqlite3-dev gnome-tweaks ffmpeg libmagickwand-dev sudo apt-get install protonvpn gnome-shell-extension-appindicator gir1.2-appindicator3-0.1
 
 # Install nvm and latest node
 if ! command -v nvm &> /dev/null
