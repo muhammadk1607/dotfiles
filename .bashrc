@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 ##############################################################################
 # Sections:                                                                  #
 #   01. General ................. General Bash behavior                      #
@@ -127,12 +129,13 @@ nvm-update() {
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
-if [ -f ~/.git-completion.bash ]; then
-	. ~/.git-completion.bash
+if [ -f ~/.git-completion.sh ]; then
+  # shellcheck source=~/.git-completion.sh
+	. ~/.git-completion.sh
 fi
 
-if [ -f ~/.ssh-completion.bash ]; then
-	. ~/.ssh-completion.bash
+if [ -f ~/.ssh-completion.sh ]; then
+	. ~/.ssh-completion.sh
 fi
 
 if [ -f ~/.bash.profile ]; then
