@@ -110,11 +110,11 @@ fi
 # Setup Themes
 scripts/install-themes.sh
 
-# # Setup Dotfiles
+# Setup Dotfiles
 ./install.sh
 
-# # Setup Completions
+# Setup Completions
 scripts/install-completions.sh
 
-# # Setup Fonts
-scripts/install-fonts.sh
+# Setup Fonts
+cd scripts || exit && ./install-fonts.sh && cd ..
