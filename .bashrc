@@ -134,6 +134,11 @@ if [ -f "$HOME"/.git-completion.bash ]; then
   . "$HOME"/.git-completion.bash
 fi
 
+if [ -f "$HOME"/.yarn-completion.bash ]; then
+  # shellcheck source=/dev/null
+  . "$HOME"/.yarn-completion.bash
+fi
+
 if [ -f "$HOME"/dotfiles/completions/.ssh-completion.sh ]; then
   # shellcheck source=/dev/null
   . "$HOME"/dotfiles/completions/.ssh-completion.sh
