@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# shellcheck source=/dev/null
 ############################
 # This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
 # It also installs the system programming essentials for myself
@@ -14,7 +13,7 @@ dir=~/dotfiles
 olddir=~/dotfiles_old
 
 # list of files/folders to symlink in homedir
-files=".bashrc .gitconfig .gitmessage .gitignore .bash.profile completions/.ssh-completion.sh completions/.npm-completion.sh"
+files=".bashrc .gitconfig .gitmessage .gitignore .bash.profile"
 
 
 # create dotfiles_old in homedir

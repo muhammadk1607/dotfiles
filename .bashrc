@@ -13,7 +13,7 @@
 ##############################################################################
 
 WHITE='\[\e[1;37m\]'
-RED='\[\e[0;31m\]'
+# RED='\[\e[0;31m\]'
 YELLOW='\[\e[1;33m\]'
 BLUE='\[\e[0;36m\]'
 PURPLE='\[\e[1;34m\]'
@@ -94,7 +94,7 @@ alias proton='protonvpn-cli'
 
 # Make a directory and move into it
 mkcdir () {
-	mkdir -p -- "$1" && cd -P -- "$1"
+	mkdir -p -- "$1" && cd -P -- "$1" || exit
 }
 
 # Kill a process that is holding the port number supplied
@@ -134,11 +134,18 @@ if [ -f ~/.git-completion.sh ]; then
 	. ~/.git-completion.sh
 fi
 
-if [ -f ~/.ssh-completion.sh ]; then
-	. ~/.ssh-completion.sh
+if [ -f ~/dotfiles/completions/.ssh-completion.sh ]; then
+  # shellcheck source=~/dotfiles/completions/.ssh-completion.sh
+	. ~/dotfiles/completions/.ssh-completion.sh
+fi
+
+if [ -f ~/.npm-completion.sh ]; then
+  # shellcheck source=~/dotfiles/completions/.ssh-completion.sh
+	. ~/.npm-completion.sh
 fi
 
 if [ -f ~/.bash.profile ]; then
+  # shellcheck source=~/.bash.profile
 	. ~/.bash.profile
 fi
 
@@ -158,7 +165,7 @@ export PATH="$PNPM_HOME:$PATH"
 
 # Overwrite cd to switch node version using nvm & .nvmrc
 cdnvm() {
-	command cd "$@"
+	command cd "$@" || exit
 	nvm_path=$(nvm_find_up .nvmrc | tr -d '\n')
 
 	# If there are no .nvmrc file, use the default nvm version
@@ -200,4 +207,4 @@ cdnvm() {
 	fi
 }
 alias cd='cdnvm'
-cd "$PWD"
+cd "$PWD" || exit
