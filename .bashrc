@@ -129,25 +129,15 @@ nvm-update() {
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
-if [ -f "$HOME"/.git-completion.bash ]; then
-  # shellcheck source=/dev/null
-  . "$HOME"/.git-completion.bash
-fi
-
-if [ -f "$HOME"/.yarn-completion.bash ]; then
-  # shellcheck source=/dev/null
-  . "$HOME"/.yarn-completion.bash
-fi
-
 if [ -f "$HOME"/dotfiles/completions/.ssh-completion.sh ]; then
   # shellcheck source=/dev/null
   . "$HOME"/dotfiles/completions/.ssh-completion.sh
 fi
 
-if [ -f "$HOME"/.npm-completion.bash ]; then
+for f in ~/.config/bash-completion/completions/*; do
   # shellcheck source=/dev/null
-  . "$HOME"/.npm-completion.bash
-fi
+  source "$f"
+done
 
 if [ -f "$HOME"/.bash.profile ]; then
   # shellcheck source=/dev/null
@@ -161,7 +151,6 @@ export PATH="$DENO_INSTALL/bin:$PATH"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
@@ -170,7 +159,7 @@ export PATH="$PNPM_HOME:$PATH"
 
 # Overwrite cd to switch node version using nvm & .nvmrc
 cdnvm() {
-  command cd "$@" || exit
+  command cd "$@" || return
   nvm_path=$(nvm_find_up .nvmrc | tr -d '\n')
 
   # If there are no .nvmrc file, use the default nvm version
