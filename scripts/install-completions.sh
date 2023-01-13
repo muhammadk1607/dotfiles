@@ -4,8 +4,6 @@
 # Completeions #
 ################
 
-## TODO - Move completions to predefined bash-completion user directory and source them all
-
 # Create bash-completion user directory
 mkdir -p ~/.config/bash-completion/completions
 
@@ -38,3 +36,16 @@ pnpm install-completion bash &&
 
 # Add nvm completion to bash-completion user directory
 curl https://raw.githubusercontent.com/nvm-sh/nvm/master/bash_completion -o ~/.config/bash-completion/completions/nvm
+
+# TODO Add Bash Completion for the following
+# - [ ] ruby
+# - [ ] rails
+# - [x] rbenv
+# - [ ] gem
+# - [ ] bundler
+# - [ ] rake
+# - [ ] pip
+# - [ ] pipenv
+# - [ ] python
+
+# TODO consider the https://github.com/scop/bash-completion project
