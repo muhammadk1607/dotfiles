@@ -129,11 +129,6 @@ nvm-update() {
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
-if [ -f "$HOME"/dotfiles/completions/.ssh-completion.sh ]; then
-  # shellcheck source=/dev/null
-  . "$HOME"/dotfiles/completions/.ssh-completion.sh
-fi
-
 for f in ~/.config/bash-completion/completions/*; do
   # shellcheck source=/dev/null
   source "$f"

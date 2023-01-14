@@ -7,6 +7,8 @@
 # Create bash-completion user directory
 mkdir -p ~/.config/bash-completion/completions
 
+cp -rsT "$HOME/dotfiles/completions" "$HOME/.config/bash-completion/completions"
+
 # Add docker completions to bash-completion user directory
 curl https://raw.githubusercontent.com/docker/cli/master/contrib/completion/bash/docker -o ~/.config/bash-completion/completions/docker
 
