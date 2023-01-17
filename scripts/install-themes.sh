@@ -3,7 +3,7 @@
 # install orchis theme
 git clone https://github.com/vinceliuice/Orchis-theme orchis &&
 	cd orchis &&
-	./install.sh -t purple -c dark -s compact -l --round 0px --tweaks compact primary &&
+	./install.sh -t purple -c dark -s compact -l --round 5px --tweaks compact primary dracula &&
 	cd .. &&
 	sudo rm -rf orchis
 
