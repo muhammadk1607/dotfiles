@@ -35,16 +35,18 @@ for version in lts/* node; do
 done
 nvm alias lts/* default
 nvm use default
-source ~/.bashrc
+export NVM_DIR="$HOME/.nvm" &&
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" &&                # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 # Install rbenv and latest ruby
 if ! command -v rbenv &> /dev/null
 then
   git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-  source ~/.bashrc
+  export PATH="$HOME/.rbenv/bin:$PATH"
+  eval "$(rbenv init -)"
   mkdir -p "$(rbenv root)"/plugins
   git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
-  source ~/.bashrc
   rbenv install 3.1.3 --verbose
   rbenv global 3.1.3
   gem install rails bundler
