@@ -36,6 +36,9 @@ npm completion >~/.config/bash-completion/completions/npm
 echo -e "\n${GREEN}Adding Deno Completions...${NC}"
 deno completions bash >~/.config/bash-completion/completions/deno
 
+echo -e "\n${GREEN}Adding Gitub CLI Completions...${NC}"
+gh completion -s bash > ~/.config/bash-completion/completions/gh
+
 echo -e "\n${GREEN}Adding PNPM Completions...${NC}"
 pnpm install-completion bash &&
 	mv config/.bashrc .bashrc-old &&
@@ -47,6 +50,8 @@ pnpm install-completion bash &&
 		tail -n -4 .bashrc-old >>~/.config/bash-completion/completions/pnpm
 	fi &&
 	rm .bashrc-old
+
+
 
 # TODO Add Bash Completion for the following
 # - [ ] ruby
