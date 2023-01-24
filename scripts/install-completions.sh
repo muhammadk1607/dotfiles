@@ -41,15 +41,15 @@ gh completion -s bash > ~/.config/bash-completion/completions/gh
 
 echo -e "\n${GREEN}Adding PNPM Completions...${NC}"
 pnpm install-completion bash &&
-	mv config/.bashrc .bashrc-old &&
-	head -n -4 .bashrc-old >config/.bashrc &&
-	if grep -q '[ -f  ] && . ~/.config/tabtab/bash/__tabtab.bash || true' ~/.config/bash-completion/completions/pnpm; then
-		echo 'pnpm completion is already added'
-	else
-		echo 'Added pnpm completions'
-		tail -n -4 .bashrc-old >>~/.config/bash-completion/completions/pnpm
-	fi &&
-	rm .bashrc-old
+  mv config/.bashrc .bashrc-old &&
+  head -n -4 .bashrc-old >config/.bashrc &&
+  if grep -q '[ -f  ] && . ~/.config/tabtab/bash/__tabtab.bash || true' ~/.config/bash-completion/completions/pnpm; then
+    echo 'pnpm completion is already added'
+  else
+    echo 'Added pnpm completions'
+    tail -n -4 .bashrc-old >>~/.config/bash-completion/completions/pnpm
+  fi &&
+  rm .bashrc-old
 
 
 

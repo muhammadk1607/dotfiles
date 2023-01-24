@@ -2,17 +2,17 @@
 
 # install orchis theme
 git clone https://github.com/vinceliuice/Orchis-theme orchis &&
-	cd orchis &&
-	./install.sh -t purple -c dark -s compact -l --round 5px --tweaks compact primary dracula &&
-	cd .. &&
-	sudo rm -rf orchis
+  cd orchis &&
+  ./install.sh -t purple -c dark -s compact -l --round 5px --tweaks compact primary dracula &&
+  cd .. &&
+  sudo rm -rf orchis
 
 # install tela icon theme
 git clone https://github.com/vinceliuice/Tela-icon-theme tela &&
-	cd tela &&
-	./install.sh purple &&
-	cd .. &&
-	rm -rf tela
+  cd tela &&
+  ./install.sh purple &&
+  cd .. &&
+  rm -rf tela
 
 #################
 # Dracula theme #
