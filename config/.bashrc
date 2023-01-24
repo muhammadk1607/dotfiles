@@ -129,6 +129,9 @@ nvm-update() {
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+# Set vivaldi as chrome executable
+export CHROME_EXECUTABLE="/usr/bin/vivaldi-stable"
+
 for f in ~/.config/bash-completion/completions/*; do
   # shellcheck source=/dev/null
   source "$f"
