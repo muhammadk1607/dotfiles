@@ -1,0 +1,10 @@
+https://extensions.gnome.org/extension/517/caffeine/
+https://extensions.gnome.org/extension/779/clipboard-indicator/
+https://extensions.gnome.org/extension/3396/color-picker/
+https://extensions.gnome.org/extension/2983/ip-finder/
+https://extensions.gnome.org/extension/1762/lan-ip-address/
+https://extensions.gnome.org/extension/36/lock-keys/
+https://extensions.gnome.org/extension/7/removable-drive-menu/
+https://extensions.gnome.org/extension/4506/simple-system-monitor/
+https://extensions.gnome.org/extension/19/user-themes/
+https://extensions.gnome.org/extension/3952/workspace-indicator/

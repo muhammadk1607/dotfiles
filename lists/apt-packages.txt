@@ -13,6 +13,5 @@ gnome-tweaks
 python-is-python3
 ffmpeg
 libmagickwand-dev
-protonvpn
 gnome-shell-extension-appindicator
 gir1.2-appindicator3-0.1

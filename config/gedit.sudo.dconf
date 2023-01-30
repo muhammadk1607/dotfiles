@@ -1,0 +1,13 @@
+[plugins]
+active-plugins=['filebrowser', 'time', 'sort', 'docinfo', 'modelines', 'spell', 'quickhighlight', 'shellcheck']
+
+[preferences/editor]
+editor-font='Iosevka Slab Medium 12'
+scheme='dracula'
+tabs-size=uint32 4
+use-default-font=false
+wrap-last-split-mode='word'
+
+
+[preferences/ui]
+show-tabs-mode='auto'

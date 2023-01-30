@@ -1,0 +1,9 @@
+[plugins]
+active-plugins=['reload', 'fullscreen', 'statusbar-date']
+
+[ui]
+sidebar=false
+
+[view]
+background-color='rgb(0,0,0)'
+use-background-color=true

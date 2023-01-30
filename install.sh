@@ -40,6 +40,7 @@ export NVM_DIR="$HOME/.nvm" &&
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 # Install rbenv and latest ruby
+# TODO - install latest & lts ruby versions
 if ! command -v rbenv &> /dev/null
 then
   git clone https://github.com/rbenv/rbenv.git ~/.rbenv
@@ -47,8 +48,8 @@ then
   eval "$(rbenv init -)"
   mkdir -p "$(rbenv root)"/plugins
   git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
-  rbenv install 3.1.3 --verbose
-  rbenv global 3.1.3
+  rbenv install 3.2.0 --verbose
+  rbenv global 3.2.0
   gem install rails bundler
 fi
 
@@ -84,7 +85,23 @@ if ! command -v code &>/dev/null; then
     sudo apt install code
 fi
 
-#install postman
+# install remmina
+if ! command -v remmina &>/dev/null; then
+  echo -e "\n${GREEN}Installing Remmina...${NC}"
+  sudo apt-add-repository ppa:remmina-ppa-team/remmina-next &&
+    sudo apt update &&
+    sudo apt install remmina remmina-plugin-rdp remmina-plugin-secret
+fi
+
+# install obs studio
+if ! command -v obs &>/dev/null; then
+  echo -e "\n${GREEN}Installing OBS Studio...${NC}"
+  sudo add-apt-repository ppa:obsproject/obs-studio
+  sudo apt update
+  sudo apt install ffmpeg obs-studio
+fi
+
+# install postman
 if ! command -v postman &>/dev/null; then
   echo -e "\n${GREEN}Installing Postman...${NC}"
   curl https://gist.githubusercontent.com/SanderTheDragon/1331397932abaa1d6fbbf63baed5f043/raw/postman-deb.sh | sh &&
@@ -123,17 +140,50 @@ if ! command -v vivaldi-stable &>/dev/null; then
     sudo apt install vivaldi-stable
 fi
 
-# Setup Themes
-scripts/install-themes.sh
+# install slack
+if ! command -v slack &>/dev/null; then
+  echo -e "\n${GREEN}Installing Slack...${NC}"
+  version="$(curl --silent https://slack.com/downloads/linux --stderr - | grep -Po -m 1 "(?<=Version )[0-9.]*")" &&
+    wget -q --show-progress "https://downloads.slack-edge.com/releases/linux/${version}/prod/x64/slack-desktop-${version}-amd64.deb" -O slack.deb &&
+    sudo apt -qq install -y ./slack.deb &&
+    rm ./slack.deb
+fi
+
+# install proton vpn cli
+if ! command -v protonvpn-cli &>/dev/null; then
+  echo -e "\n${GREEN}Installing Proton VPN CLI...${NC}"
+  wget -q --show-progress https://repo.protonvpn.com/debian/dists/stable/main/binary-all/protonvpn-stable-release_1.0.3_all.deb -O proton_repo.deb &&
+    sudo apt install ./proton_repo.deb &&
+    rm ./proton_repo.deb &&
+    sudo apt update &&
+    sudo apt install protonvpn-cli
+fi
+
+# install foliate
+if ! command -v com.github.johnfactotum.Foliate &>/dev/null; then
+  echo -e "\n${GREEN}Installing Foliate...${NC}"
+  repo="johnfactotum/foliate" &&
+    tag="$(latest_git_release "$repo")" &&
+    version="${tag:1}" &&
+    wget -q --show-progress "https://github.com/${repo}/releases/download/${tag}/com.github.johnfactotum.foliate_${version}_all.deb" -O foliate.deb &&
+    sudo apt -qq install -y ./foliate.deb &&
+    rm ./foliate.deb
+fi
+
+# Setup Configs for theming and other stuff
+scripts/setup-config.sh
 
 # Setup Fonts
 scripts/install-fonts.sh
 
 # Setup Dotfiles
 echo -e "\n${GREEN}Creating symlinks for dotfiles...${NC}"
-cp -rsTvf ~/dotfiles/config ~/
+cp -rsTvf ~/dotfiles/dot ~/
 
 # Install Completions
 scripts/install-completions.sh
+
+# Move assets i.e wallpapers, icons, etc
+scripts/move-assets.sh
 
 source ~/.bashrc

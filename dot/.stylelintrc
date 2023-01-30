@@ -1,0 +1,11 @@
+// @ts-check
+
+/** @type {import('stylelint').Config} */
+const config = {
+	plugins: [
+		'stylelint-config-standard',
+		'stylelint-config-standard-scss',
+	],
+};
+
+module.exports = config;

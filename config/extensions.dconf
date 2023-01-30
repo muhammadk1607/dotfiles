@@ -1,0 +1,102 @@
+[caffeine]
+nightlight-control='never'
+restore-state=true
+show-indicator=true
+user-enabled=true
+
+[clipboard-indicator]
+disable-down-arrow=true
+display-mode=0
+history-size=30
+move-item-first=true
+strip-text=true
+
+[color-picker]
+color-picker-shortcut=['<Super>c']
+enable-shortcut=true
+notify-style=uint32 1
+persistent-mode=false
+
+[horizontal-workspace-indicator]
+widget-position='left'
+
+[openweather]
+actual-city=0
+center-forecast=true
+city='-8.5211767,179.1976747>Lahore, Pakistan>0'
+days-forecast=2
+decimal-places=1
+geolocation-provider='openstreetmaps'
+menu-alignment=33.540372670807457
+position-in-panel='center'
+pressure-unit='inHg'
+show-comment-in-forecast=true
+show-comment-in-panel=false
+show-text-in-panel=true
+translate-condition=true
+unit='celsius'
+use-default-owm-key=true
+use-symbolic-icons=true
+use-text-on-buttons=false
+weather-provider='openweathermap'
+wind-direction=true
+wind-speed-unit='kph'
+
+[pop-cosmic]
+show-applications-button=false
+show-workspaces-button=false
+
+[lockkeys]
+notification-preferences='osd'
+style='both'
+
+[pop-shell]
+active-hint=false
+gap-inner=uint32 1
+gap-outer=uint32 1
+hint-color-rgba='rgb(229,57,53)'
+smart-gaps=true
+tile-by-default=true
+
+[public-ip-address]
+map-tile-coords='361,208'
+panel-vpn-icon-colors=false
+panel-vpn-icons=false
+panel-vpn-ip-addr-colors=false
+position-in-panel='left'
+
+[screenshot]
+backend='gnome-screenshot'
+click-action='show-menu'
+clipboard-action='none'
+copy-button-action='set-image-data'
+effect-rescale=100
+
+[sermon]
+cron-section-enabled=false
+max-items-per-section=20
+systemd-section-filter-priority-list=true
+systemd-section-filter-user-services=false
+
+[simple-system-monitor]
+cpu-usage-text='💻'
+download-speed-text=' ↓'
+extension-order=4
+extension-position='left'
+font-family='Kelson'
+font-size=' 12'
+font-weight=900
+is-cpu-usage-enable=true
+is-download-speed-enable=true
+is-memory-usage-enable=true
+is-upload-speed-enable=true
+item-separator='  '
+memory-usage-text=' 🐏'
+refresh-interval=1
+show-extra-spaces=true
+show-percent-sign=true
+text-color='#dddddd'
+upload-speed-text=' ↑'
+
+[user-theme]
+name='Orchis-Purple-Dark-Compact-Dracula'
