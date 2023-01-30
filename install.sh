@@ -5,6 +5,9 @@
 # It installs all the packages I need for my development environment
 ############################
 
+# shellcheck source=SCRIPTDIR/scripts/latest-git-release.sh
+source scripts/latest-git-release.sh
+
 # shellcheck source=/dev/null
 
 GREEN='\e[32m'
@@ -130,8 +133,11 @@ fi
 # install mongodb compass
 if ! command -v mongodb-compass &>/dev/null; then
   echo -e "\n${GREEN}Installing MongoDB Compass...${NC}"
-  wget https://downloads.mongodb.com/compass/mongodb-compass_1.34.2_amd64.deb -O compass.deb &&
-    sudo apt install ./compass.deb &&
+  repo="mongodb-js/compass" &&
+    tag="$(latest_git_release "$repo")" &&
+    version="${tag:1}" &&
+    wget -q --show-progress "https://github.com/${repo}/releases/download/${tag}/mongodb-compass_${version}_amd64.deb" -O compass.deb &&
+    sudo apt -qq install -y ./compass.deb &&
     rm ./compass.deb
 fi
 
