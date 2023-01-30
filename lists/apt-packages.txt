@@ -16,3 +16,4 @@ libmagickwand-dev
 gnome-shell-extension-appindicator
 gir1.2-appindicator3-0.1
 jq
+libyaml-dev
