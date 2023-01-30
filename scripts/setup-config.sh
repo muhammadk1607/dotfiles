@@ -57,7 +57,7 @@ echo -e "\n${GREEN}Setting Up Config With Dconf...${NC}"
 dconf load /org/gnome/desktop/ <"$config_folder"/desktop.dconf
 dconf load /org/gnome/eog/ <"$config_folder"/eog.dconf
 dconf load /org/gnome/shell/extensions/ <"$config_folder"/extensions.dconf
-dconf load /org/gnome/gedit. <"$config_folder"/gedit.dconf
+dconf load /org/gnome/gedit/ <"$config_folder"/gedit.dconf
 sudo dconf load /org/gnome/gedit/ <"$config_folder"/gedit.sudo.dconf
 dconf load /org/gnome/nautilus/ <"$config_folder"/nautilus.dconf
 dconf load /org/gnome/system/ <"$config_folder"/system.dconf
