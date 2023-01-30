@@ -10,6 +10,10 @@
 GREEN='\e[32m'
 NC='\e[0m'
 
+# Setup Dotfiles
+echo -e "\n${GREEN}Creating symlinks for dotfiles...${NC}"
+cp -rsTvf ~/dotfiles/dot ~/
+
 # Check if curl is installed, if not install it
 type -p curl >/dev/null || sudo apt install curl -y
 
@@ -175,10 +179,6 @@ scripts/setup-config.sh
 
 # Setup Fonts
 scripts/install-fonts.sh
-
-# Setup Dotfiles
-echo -e "\n${GREEN}Creating symlinks for dotfiles...${NC}"
-cp -rsTvf ~/dotfiles/dot ~/
 
 # Install Completions
 scripts/install-completions.sh
