@@ -11,6 +11,7 @@ ngrok
 vsce
 @svgr/cli
 expo-cli
+create-expo-app
 eas-cli
 dotenv-vault
 npkill
