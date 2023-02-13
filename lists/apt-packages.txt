@@ -19,3 +19,4 @@ jq
 libyaml-dev
 xclip
 neofetch
+blueman
