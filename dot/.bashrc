@@ -74,13 +74,13 @@ export EDITOR="code -w"
 ##############################################################################
 
 alias install-postman-deb='curl https://gist.githubusercontent.com/SanderTheDragon/1331397932abaa1d6fbbf63baed5f043/raw/postman-deb.sh | sh'
-# simple update alias
-alias update='sudo apt update && sudo apt full-upgrade -y --allow-downgrades --fix-missing && sudo apt autoremove'
+
 # some more ls aliases
 alias ll='ls -alF --color=auto'
 alias la='ls -A --color=auto'
 alias l='ls -CF --color=auto'
 alias ls='ls --color=auto'
+
 alias ssh-hosts="grep -P \"^Host ([^*]+)$\" $HOME/.ssh/config | sed 's/Host //'"
 alias apti="apt list --installed"
 alias pn='pnpm'
@@ -89,6 +89,23 @@ alias proton='protonvpn-cli'
 ##############################################################################
 # 03. Functions                                                              #
 ##############################################################################
+
+# update the environment
+update() {
+	sudo apt update &&
+		sudo apt full-upgrade -y --allow-downgrades --fix-missing &&
+		sudo apt autoremove &&
+		~/dotfiles/scripts/install-nvm.sh &&
+		nvm-update lts/* &&
+		nvm use lts/* &&
+		npm-check -gu &&
+		nvm-update node &&
+		nvm use node &&
+		npm-check -gu &&
+		nvm use default &&
+		install-postman-deb &&
+		deno upgrade
+}
 
 # Make a directory and move into it
 mkcdir () {
@@ -110,14 +127,45 @@ public_ip() {
   curl ipinfo.io/ip
 }
 
-# update nvm version
+# udpate nvm version
 nvm-update() {
-  nvm install "$1" --latest-npm --reinstall-packages-from="$2"
-  nvm uninstall "$2"
-  corepack enable yarn
-  corepack enable pnpm
-  corepack prepare pnpm@latest --activate
-  nvm use default
+	echo
+	echo "Updating Node Version $1"
+	echo
+	local current
+	local remote
+	current="$(nvm version "$1")"
+	if [ "$current" = "N/A" ]; then
+		echo "Version $1 Not Found!"
+		versions="$(nvm ls --no-alias --no-colors | xargs)"
+		versions=${versions//->/}
+		versions=${versions// v/v}
+		versions=${versions//\*/}
+		versions=($versions)
+		PS3="Select A Version To Use As $1: "
+		select current in "${versions[@]}"; do
+			if [ -n "$current" ]; then
+				break
+			fi
+		done
+		echo
+	fi
+
+	remote="$(nvm version-remote "$1")"
+	if [ "$remote" = "N/A" ]; then
+		echo "Version $1 Not Found On Remote"
+	elif [ "$current" = "$remote" ]; then
+		echo "Version $1 Is Up To Date"
+	else
+		echo "Updating $1 From $current To $remote"
+		nvm install "$1" --latest-npm --reinstall-packages-from="$current" &&
+			nvm uninstall "$current" &&
+			corepack enable yarn &&
+			corepack enable pnpm &&
+			corepack prepare yarn@stable --activate &&
+			corepack prepare pnpm@latest --activate &&
+			nvm use default
+	fi
 }
 
 ##############################################################################
