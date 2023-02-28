@@ -13,6 +13,8 @@
 [user]
   email = muhammadkhan1607@gmail.com
   name = mbm_1607
+  signingkey = 705BF96933600DE8
+  gpgsign = true
 [pull]
   rebase = false
 [init]
