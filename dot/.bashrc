@@ -92,19 +92,19 @@ alias proton='protonvpn-cli'
 
 # update the environment
 update() {
-	sudo apt update &&
-		sudo apt full-upgrade -y --allow-downgrades --fix-missing &&
-		sudo apt autoremove &&
-		~/dotfiles/scripts/install-nvm.sh &&
-		nvm-update lts/* &&
-		nvm use lts/* &&
-		npm-check -gu &&
-		nvm-update node &&
-		nvm use node &&
-		npm-check -gu &&
-		nvm use default &&
-		install-postman-deb &&
-		deno upgrade
+  sudo apt update &&
+    sudo apt full-upgrade -y --allow-downgrades --fix-missing &&
+    sudo apt autoremove &&
+    ~/dotfiles/scripts/install-nvm.sh &&
+    nvm-update lts/* &&
+    nvm use lts/* &&
+    npm-check -gu &&
+    nvm-update node &&
+    nvm use node &&
+    npm-check -gu &&
+    nvm use default &&
+    install-postman-deb &&
+    deno upgrade
 }
 
 # Make a directory and move into it
@@ -129,43 +129,43 @@ public_ip() {
 
 # udpate nvm version
 nvm-update() {
-	echo
-	echo "Updating Node Version $1"
-	echo
-	local current
-	local remote
-	current="$(nvm version "$1")"
-	if [ "$current" = "N/A" ]; then
-		echo "Version $1 Not Found!"
-		versions="$(nvm ls --no-alias --no-colors | xargs)"
-		versions=${versions//->/}
-		versions=${versions// v/v}
-		versions=${versions//\*/}
-		versions=($versions)
-		PS3="Select A Version To Use As $1: "
-		select current in "${versions[@]}"; do
-			if [ -n "$current" ]; then
-				break
-			fi
-		done
-		echo
-	fi
+  echo
+  echo "Updating Node Version $1"
+  echo
+  local current
+  local remote
+  current="$(nvm version "$1")"
+  if [ "$current" = "N/A" ]; then
+    echo "Version $1 Not Found!"
+    versions="$(nvm ls --no-alias --no-colors | xargs)"
+    versions=${versions//->/}
+    versions=${versions// v/v}
+    versions=${versions//\*/}
+    versions=($versions)
+    PS3="Select A Version To Use As $1: "
+    select current in "${versions[@]}"; do
+      if [ -n "$current" ]; then
+        break
+      fi
+    done
+    echo
+  fi
 
-	remote="$(nvm version-remote "$1")"
-	if [ "$remote" = "N/A" ]; then
-		echo "Version $1 Not Found On Remote"
-	elif [ "$current" = "$remote" ]; then
-		echo "Version $1 Is Up To Date"
-	else
-		echo "Updating $1 From $current To $remote"
-		nvm install "$1" --latest-npm --reinstall-packages-from="$current" &&
-			nvm uninstall "$current" &&
-			corepack enable yarn &&
-			corepack enable pnpm &&
-			corepack prepare yarn@stable --activate &&
-			corepack prepare pnpm@latest --activate &&
-			nvm use default
-	fi
+  remote="$(nvm version-remote "$1")"
+  if [ "$remote" = "N/A" ]; then
+    echo "Version $1 Not Found On Remote"
+  elif [ "$current" = "$remote" ]; then
+    echo "Version $1 Is Up To Date"
+  else
+    echo "Updating $1 From $current To $remote"
+    nvm install "$1" --latest-npm --reinstall-packages-from="$current" &&
+      nvm uninstall "$current" &&
+      corepack enable yarn &&
+      corepack enable pnpm &&
+      corepack prepare yarn@stable --activate &&
+      corepack prepare pnpm@latest --activate &&
+      nvm use default
+  fi
 }
 
 ##############################################################################
