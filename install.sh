@@ -122,11 +122,10 @@ if ! command -v anydesk &>/dev/null; then
   echo
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo -e "\n${GREEN}Installing AnyDesk...${NC}"
-    wget -qO - https://keys.anydesk.com/repos/DEB-GPG-KEY | apt-key add - &&
-      echo "deb http://deb.anydesk.com/ all main" >/etc/apt/sources.list.d/anydesk-stable.list &&
-      sudo apt update &&
-      sudo apt install anydesk
-
+    curl -fsSL https://keys.anydesk.com/repos/DEB-GPG-KEY|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/anydesk.gpg
+    echo "deb http://deb.anydesk.com/ all main" | sudo tee /etc/apt/sources.list.d/anydesk-stable.list
+    sudo apt -qq update
+    sudo apt -qq install -y anydesk
   fi
 fi
 
