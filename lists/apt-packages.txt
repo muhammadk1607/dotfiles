@@ -20,3 +20,4 @@ libyaml-dev
 xclip
 neofetch
 blueman
+gitmoji-cli
