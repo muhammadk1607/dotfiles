@@ -21,3 +21,4 @@ xclip
 neofetch
 blueman
 gitmoji-cli
+openjdk-8-jdk
