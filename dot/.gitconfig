@@ -14,10 +14,12 @@
 [user]
   email = muhammadkhan1607@gmail.com
   name = mbm_1607
-  signingkey = 705BF96933600DE8
+	signingkey = /home/th014/.ssh/id-github.pub
 [pull]
   rebase = false
 [init]
   defaultBranch = main
 [url "git@github.com:"]
   insteadOf = https://github.com/
+[gpg]
+  format = ssh

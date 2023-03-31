@@ -84,14 +84,6 @@ sudo update-alternatives --set x-terminal-emulator /usr/bin/tilix.wrapper &&
 	glib-compile-schemas ~/.local/share/glib-2.0/schemas/ &&
 	gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal tilix
 
-[ ! -f "$HOME/.ssh/config" ] &&
-	echo -e "\n${GREEN}Setting Up SSH config...${NC}" &&
-	ssh-keygen -t ed25519 -C "muhammadkhan1607@gmail.com" -f ~/.ssh/id_ed25519 -N "" &&
-	eval "$(ssh-agent -s)" &&
-	ssh-add ~/.ssh/id_ed25519 &&
-	cp ~/dotfiles/config/.ssh/* ~/.ssh/ &&
-	echo -e -n "${GREY}Enter a title for your new github ssh key:${NC} " &&
-	read -r ssh_key_title &&
-	gh ssh-key add ~/.ssh/id_ed25519.pub -t "${ssh_key_title}"
+./generate-ssh-key.sh
 
 killall -3 gnome-shell
