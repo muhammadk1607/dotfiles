@@ -179,6 +179,12 @@ if ! command -v com.github.johnfactotum.Foliate &>/dev/null; then
     rm ./foliate.deb
 fi
 
+## TODO Add JetBrains Toolbox installation
+### TODO Install Android Studio
+### TODO Install DataGrip
+### TODO JAVA
+### TODO Install Gradle
+
 # Setup Configs for theming and other stuff
 scripts/setup-config.sh
 
