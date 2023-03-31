@@ -14,7 +14,7 @@
 [user]
   email = muhammadkhan1607@gmail.com
   name = mbm_1607
-	signingkey = /home/th014/.ssh/id-github.pub
+  signingkey = ~/.ssh/id-github.pub
 [pull]
   rebase = false
 [init]
