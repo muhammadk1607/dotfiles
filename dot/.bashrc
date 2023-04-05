@@ -104,7 +104,8 @@ update() {
     npm-check -gu &&
     nvm use default &&
     install-postman-deb &&
-    deno upgrade
+    deno upgrade &&
+    git -C "$(rbenv root)"/plugins/ruby-build pull
 }
 
 # Make a directory and move into it
