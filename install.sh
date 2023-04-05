@@ -55,8 +55,8 @@ then
   eval "$(rbenv init -)"
   mkdir -p "$(rbenv root)"/plugins
   git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
-  rbenv install 3.2.1 --verbose
-  rbenv global 3.2.1
+  rbenv install 3.2.2 --verbose
+  rbenv global 3.2.2
   gem install rails bundler prettier_print syntax_tree syntax_tree-haml syntax_tree-rbs
 fi
 
