@@ -129,6 +129,17 @@ if ! command -v anydesk &>/dev/null; then
   fi
 fi
 
+# install mongodb server
+if ! command -v mongod &>/dev/null; then
+	echo -e "\n${GREEN}Installing MongoDB Server...${NC}"
+	wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add - &&
+		echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list &&
+		sudo apt -qq update &&
+		sudo apt -qq install -y mongodb-org &&
+		sudo systemctl daemon-reload &&
+		sudo systemctl start mongod
+fi
+
 # install mongodb compass
 if ! command -v mongodb-compass &>/dev/null; then
   echo -e "\n${GREEN}Installing MongoDB Compass...${NC}"

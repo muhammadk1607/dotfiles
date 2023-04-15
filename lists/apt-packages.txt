@@ -22,3 +22,4 @@ neofetch
 blueman
 gitmoji-cli
 openjdk-11-jdk
+gnupg
