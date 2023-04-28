@@ -258,3 +258,6 @@ cdnvm() {
 }
 alias cd='cdnvm'
 cd "$PWD" || exit
+
+# Set github-copilot-cli aliases
+eval "$(github-copilot-cli alias -- "$0")"

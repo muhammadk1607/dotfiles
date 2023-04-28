@@ -20,3 +20,4 @@ stylelint-config-standard
 stylelint-config-standard-scss
 pm2
 concurrently
+@githubnext/github-copilot-cli
