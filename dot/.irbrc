@@ -32,7 +32,7 @@ def env_prompt
 end
 
 if defined?(Rails)
-  IRB.conf[:USE_AUTOCOMPLETE] = true
+  IRB.conf[:USE_AUTOCOMPLETE] = false
   IRB.conf[:HISTORY_FILE] = FileUtils.touch(log_path).join
   IRB.conf[:PROMPT] ||= {}
 
