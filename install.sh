@@ -57,7 +57,7 @@ then
   git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
   rbenv install 3.2.2 --verbose
   rbenv global 3.2.2
-  gem install rails bundler prettier_print syntax_tree syntax_tree-haml syntax_tree-rbs
+  gem install rails bundler prettier_print syntax_tree syntax_tree-haml syntax_tree-rbs rainbow
 fi
 
 # Install Deno
