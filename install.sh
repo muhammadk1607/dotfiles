@@ -41,7 +41,7 @@ for version in lts/* node; do
   nvm install "$version" &&
     xargs npm install -g <lists/npm-packages.txt &&
     corepack enable &&
-    corepack prepare yarn@stable --activate &&
+    corepack prepare yarn@1.22.19 --activate &&
     corepack prepare pnpm@latest --activate
 done
 nvm alias lts/* default
