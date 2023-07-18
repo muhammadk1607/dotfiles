@@ -115,7 +115,7 @@ mkcdir () {
 
 # Kill a process that is holding the port number supplied
 killport() {
-  sudo kill -9 $(sudo fuser -n tcp $1 2> /dev/null);
+  sudo kill -9 $(sudo fuser -n tcp "$1" 2> /dev/null);
 }
 
 # Get all local ips
@@ -142,6 +142,7 @@ nvm-update() {
     versions=${versions//->/}
     versions=${versions// v/v}
     versions=${versions//\*/}
+    # ! Don't quote $versions here, it needs to be word-split
     versions=($versions)
     PS3="Select A Version To Use As $1: "
     select current in "${versions[@]}"; do
@@ -163,7 +164,7 @@ nvm-update() {
       nvm uninstall "$current" &&
       corepack enable yarn &&
       corepack enable pnpm &&
-      corepack prepare yarn@stable --activate &&
+      corepack prepare yarn@1.22.19 --activate &&
       corepack prepare pnpm@latest --activate &&
       nvm use default
   fi
