@@ -52,8 +52,6 @@ pnpm install-completion bash &&
   fi &&
   rm .bashrc-old
 
-
-
 # TODO Add Bash Completion for the following
 # - [ ] ruby
 # - [ ] rails

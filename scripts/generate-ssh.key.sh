@@ -10,5 +10,6 @@ echo -e "\n${GREEN}Setting Up SSH config...${NC}" &&
 	echo -e -n "${GREY}Enter a title for your new github ssh key:${NC} " &&
 	read -r ssh_key_title &&
 	gh ssh-key add ~/.ssh/id-github.pub -t "${ssh_key_title}"
+  gh ssh-key add ~/.ssh/id-github.pub --type signing
 
 [ ! -f "$HOME/.ssh/config" ] && cp ~/dotfiles/config/.ssh/* ~/.ssh/

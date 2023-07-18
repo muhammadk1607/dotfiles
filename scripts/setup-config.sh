@@ -85,5 +85,4 @@ sudo update-alternatives --set x-terminal-emulator /usr/bin/tilix.wrapper &&
 	gsettings set com.github.stunkymonkey.nautilus-open-any-terminal terminal tilix
 
 ./generate-ssh-key.sh
-
 killall -3 gnome-shell
