@@ -12,3 +12,15 @@ version="$(latest_git_release "nvm-sh/nvm")" &&
   export NVM_DIR="$HOME/.nvm" &&
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" &&                # This loads nvm
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+
+# Install nvm node versions
+for version in lts/* node; do
+  echo -e "\n${GREEN}Setting Up Node Version: $version...${NC}"
+  nvm install "$version" &&
+    xargs npm install -g < "$HOME"/dotfiles/lists/npm-packages.txt &&
+    corepack enable &&
+    corepack prepare yarn@1.22.19 --activate &&
+    corepack prepare pnpm@latest --activate
+done
+nvm alias lts/* default
+nvm use default

@@ -35,21 +35,6 @@ source ~/.bashrc
 # ? This will require a reboot for the user to be added to the docker group
 ./scripts/install-docker.sh
 
-# Install nvm node versions
-for version in lts/* node; do
-  echo -e "\n${GREEN}Setting Up Node Version: $version...${NC}"
-  nvm install "$version" &&
-    xargs npm install -g <lists/npm-packages.txt &&
-    corepack enable &&
-    corepack prepare yarn@1.22.19 --activate &&
-    corepack prepare pnpm@latest --activate
-done
-nvm alias lts/* default
-nvm use default
-export NVM_DIR="$HOME/.nvm" &&
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" &&                # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-
 # Install rbenv and latest ruby
 # TODO - install latest & lts ruby versions
 if ! command -v rbenv &> /dev/null
