@@ -25,3 +25,4 @@ openjdk-11-jdk
 gnupg
 vlc
 adb
+webp
