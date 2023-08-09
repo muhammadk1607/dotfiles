@@ -1,8 +1,6 @@
 # Created by https://www.toptal.com/developers/gitignore/api/ruby,rails,python,react,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=ruby,rails,python,react,node
 
-.vscode
-
 ### Node ###
 # Logs
 logs
