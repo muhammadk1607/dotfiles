@@ -179,6 +179,13 @@ if ! command -v com.github.johnfactotum.Foliate &>/dev/null; then
     rm ./foliate.deb
 fi
 
+echo
+read -p "Do you want to install Turso CLI (y/n)? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  curl -sSfL https://get.tur.so/install.sh | bash
+fi
+
 ## TODO Add JetBrains Toolbox installation
 ### TODO Install Android Studio
 ### TODO Install DataGrip

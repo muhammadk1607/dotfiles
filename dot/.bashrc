@@ -174,6 +174,9 @@ nvm-update() {
 # 04. Setup Environments                                                     #
 ##############################################################################
 
+# Turso
+export PATH="/home/muhammad/.turso:$PATH"
+
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
