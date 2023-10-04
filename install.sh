@@ -186,6 +186,13 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   curl -sSfL https://get.tur.so/install.sh | bash
 fi
 
+echo
+read -p "Do you want to install FlyCTL CLI (y/n)? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  curl -L https://fly.io/install.sh | sh
+fi
+
 ## TODO Add JetBrains Toolbox installation
 ### TODO Install Android Studio
 ### TODO Install DataGrip

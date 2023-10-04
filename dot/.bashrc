@@ -177,6 +177,10 @@ nvm-update() {
 # Turso
 export PATH="/home/muhammad/.turso:$PATH"
 
+# FlyCTL
+export FLYCTL_INSTALL="/home/muhammad/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
