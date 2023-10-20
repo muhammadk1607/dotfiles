@@ -22,5 +22,5 @@ for version in lts/* node; do
     corepack prepare yarn@stable --activate &&
     corepack prepare pnpm@latest --activate
 done
-nvm alias lts/* default
+nvm alias default lts/*
 nvm use default
