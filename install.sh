@@ -27,6 +27,11 @@ type -p xargs >/dev/null || sudo apt install xargs -y
 echo -e "\n${GREEN}Setting Up APT Packages...${NC}"
 xargs sudo apt install -y < lists/apt-packages.txt
 
+# Install onefetch https://github.com/o2sh/onefetch
+sudo add-apt-repository ppa:o2sh/onefetch
+sudo apt-get update
+sudo apt install onefetch
+
 # Install or update nvm
 ./scripts/install-nvm.sh
 source ~/.bashrc
