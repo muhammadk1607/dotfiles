@@ -106,6 +106,7 @@ update() {
     install-postman-deb &&
     deno upgrade &&
     git -C "$(rbenv root)"/plugins/ruby-build pull
+    git -C "$(rbenv root)"/plugins/rbenv-vars pull
 }
 
 # Make a directory and move into it
