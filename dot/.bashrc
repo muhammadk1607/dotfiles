@@ -212,7 +212,7 @@ export NVM_DIR="$HOME/.nvm"
 # android
 export ANDROID_HOME="$HOME/Android/Sdk"
 export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
-export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
 export GRADLE_HOME="/opt/gradle/gradle-8.0.2"
 export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$GRADLE_HOME/bin"
 # android end
