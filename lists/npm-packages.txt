@@ -20,3 +20,5 @@ stylelint-config-standard
 stylelint-config-standard-scss
 pm2
 concurrently
+sharp-cli
+tinypng-cli
