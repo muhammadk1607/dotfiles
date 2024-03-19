@@ -76,15 +76,18 @@ export EDITOR="code -w"
 alias install-postman-deb='curl https://gist.githubusercontent.com/SanderTheDragon/1331397932abaa1d6fbbf63baed5f043/raw/postman-deb.sh | sh'
 
 # some more ls aliases
-alias ll='ls -alF --color=auto'
-alias la='ls -A --color=auto'
-alias l='ls -CF --color=auto'
-alias ls='ls --color=auto'
-
-alias ssh-hosts="grep -P \"^Host ([^*]+)$\" $HOME/.ssh/config | sed 's/Host //'"
+alias ll="ls -alF --color=auto"
+alias la="ls -A --color=auto"
+alias l="ls -CF --color=auto"
+alias ls="ls --color=auto"
+alias ssh-hosts="grep -P \"^Host ([^*]+)$\" \$HOME/.ssh/config | sed 's/Host //'"
+alias git-open="git repo view --web"
 alias apti="apt list --installed"
-alias pn='pnpm'
-alias proton='protonvpn-cli'
+alias pn="pnpm"
+alias pnx="pnpm dlx"
+alias open="xdg-open"
+alias proton="protonvpn-cli"
+alias cat="batcat --paging=never --theme=Dracula"
 
 ##############################################################################
 # 03. Functions                                                              #
