@@ -108,8 +108,10 @@ update() {
     nvm use default &&
     install-postman-deb &&
     deno upgrade &&
-    git -C "$(rbenv root)"/plugins/ruby-build pull
-    git -C "$(rbenv root)"/plugins/rbenv-vars pull
+    git -C "$(rbenv root)"/plugins/ruby-build pull &&
+    git -C "$(rbenv root)"/plugins/rbenv-vars pull &&
+    tldr --update &&
+    gh extension upgrade --all
 }
 
 # Make a directory and move into it
