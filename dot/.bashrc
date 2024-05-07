@@ -5,7 +5,7 @@
 #   01. General ................. General Bash behavior                      #
 #   02. Aliases ................. Aliases                                    #
 #   03. Functions ............... Helper functions                           #
-#   04. Setup Environments .................... rbenv and bash setup    #
+#   04. Setup Environments ...... rbenv and bash setup                       #
 ##############################################################################
 
 ##############################################################################
@@ -176,6 +176,25 @@ nvm-update() {
       corepack prepare pnpm@latest --activate &&
       nvm use default
   fi
+}
+
+cwebpdir() {
+  if [ -z "$1" ]; then
+    echo "Usage: cwebpdir <directory>"
+    return
+  fi
+
+  PARAMS=('-m 6 -q 70 -mt -af -progress')
+
+  for file in "$1"/*; do
+    if [ -f "$file" ]; then
+      # shellcheck disable=SC2086,SC2128
+      cwebp $PARAMS "$file" -o "${file%.*}.webp"
+    fi
+    if [ -d "$file" ]; then
+      cwebpdir "$file"
+    fi
+  done
 }
 
 ##############################################################################
