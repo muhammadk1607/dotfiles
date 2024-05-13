@@ -89,8 +89,6 @@ alias open="xdg-open"
 alias proton="protonvpn-cli"
 alias cat="batcat --paging=never --theme=Dracula"
 
-eval "$(gh copilot alias -- bash)"
-
 ##############################################################################
 # 03. Functions                                                              #
 ##############################################################################
