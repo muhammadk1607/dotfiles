@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 GREEN='\e[32m'
+PURPLE='\e[35m'
 NC='\e[0m'
 
 # shellcheck source=latest-git-release.sh
@@ -18,6 +19,9 @@ if ! command -v docker &>/dev/null; then
     sudo apt -qq update &&
     sudo apt -qq install -y docker-ce docker-ce-cli containerd.io &&
     sudo usermod -aG docker "$USER"
+    echo -e "\n${GREEN}Docker installed successfully.${NC}"
+    echo -e "\n${PURPLE}Please enter your password to continue.${NC}"
+    exec su -l "$USER"
 fi
 
 # Install Docker Compose
