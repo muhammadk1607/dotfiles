@@ -49,8 +49,8 @@ then
   mkdir -p "$(rbenv root)"/plugins
   git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
   git clone https://github.com/rbenv/rbenv-vars.git "$(rbenv root)"/plugins/rbenv-vars
-  rbenv install 3.2.2 --verbose
-  rbenv global 3.2.2
+  rbenv install 3.3.3 --verbose
+  rbenv global 3.3.3
   gem install rails bundler prettier_print syntax_tree syntax_tree-haml syntax_tree-rbs rainbow
 fi
 
