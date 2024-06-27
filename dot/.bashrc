@@ -87,7 +87,7 @@ alias pn="pnpm"
 alias pnx="pnpm dlx"
 alias open="xdg-open"
 alias proton="protonvpn-cli"
-alias cat="batcat --paging=never --theme=Dracula"
+alias bat="batcat --paging=never --theme=Dracula"
 
 ##############################################################################
 # 03. Functions                                                              #
