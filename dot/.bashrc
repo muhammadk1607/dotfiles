@@ -196,7 +196,7 @@ cwebpdir() {
 }
 
 mkv_to_mp4() {
-  ffmpeg -i "$1" -c:v copy -c:a aac -strict experimental "${1%.*}.mp4"
+  ffmpeg -i "$1" -c:v copy -c:a aac -strict experimental -vcodec libx265 -crf 28 "${1%.*}.mp4"
 }
 
 ##############################################################################
