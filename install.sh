@@ -44,7 +44,7 @@ if ! command -v gh &>/dev/null; then
 fi
 
 # Generate & Add SSH key for github access
-./generate-ssh-key.sh
+./scripts/generate-ssh-key.sh
 
 # Install or update nvm
 ./scripts/install-nvm.sh
