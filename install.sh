@@ -148,9 +148,6 @@ fi
 # install proton vpn cli
 ./scripts/install-proton-vpn.sh
 
-# install foliate
-./scripts/install-foliate.sh
-
 echo
 read -p "Do you want to install Turso CLI (y/n)? " -n 1 -r
 echo

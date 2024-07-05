@@ -34,7 +34,6 @@ It performs the following actions:
   - Vivaldi
   - Slack
   - ProtonVPN
-  - Foliate
   - Remmina
   - OBS Studio
   - Deno
