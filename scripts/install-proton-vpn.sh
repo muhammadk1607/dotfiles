@@ -8,5 +8,6 @@ if ! command -v protonvpn-cli &>/dev/null; then
   wget -q --show-progress https://repo.protonvpn.com/debian/dists/stable/main/binary-all/protonvpn-stable-release_1.0.3-3_all.deb -O proton_repo.deb &&
     sudo dpkg -i proton_repo.deb &&
     rm ./proton_repo.deb &&
-    sudo apt update
+    sudo apt update &&
+    sudo apt install proton-vpn-gnome-desktop
 fi
