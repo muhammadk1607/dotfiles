@@ -149,15 +149,7 @@ fi
 ./scripts/install-proton-vpn.sh
 
 # install foliate
-if ! command -v com.github.johnfactotum.Foliate &>/dev/null; then
-  echo -e "\n${GREEN}Installing Foliate...${NC}"
-  repo="johnfactotum/foliate" &&
-    tag="$(latest_git_release "$repo")" &&
-    version="${tag:1}" &&
-    wget -q --show-progress "https://github.com/${repo}/releases/download/${tag}/com.github.johnfactotum.foliate_${version}_all.deb" -O foliate.deb &&
-    sudo apt -qq install -y ./foliate.deb &&
-    rm ./foliate.deb
-fi
+./scripts/install-foliate.sh
 
 echo
 read -p "Do you want to install Turso CLI (y/n)? " -n 1 -r
