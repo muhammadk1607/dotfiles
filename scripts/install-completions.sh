@@ -41,16 +41,7 @@ echo -e "\n${GREEN}Adding Gitub CLI Completions...${NC}"
 gh completion -s bash > $COMPLETIONS_DIR/gh
 
 echo -e "\n${GREEN}Adding PNPM Completions...${NC}"
-pnpm install-completion bash &&
-  mv dot/.bashrc .bashrc-old &&
-  head -n -4 .bashrc-old >dot/.bashrc &&
-  if grep -q '[ -f  ] && . ~/.config/tabtab/bash/__tabtab.bash || true' $COMPLETIONS_DIR/pnpm; then
-    echo 'pnpm completion is already added'
-  else
-    echo 'Added pnpm completions'
-    tail -n -4 .bashrc-old >>$COMPLETIONS_DIR/pnpm
-  fi &&
-  rm .bashrc-old
+pnpm completion bash > $COMPLETIONS_DIR/pnpm
 
 # TODO Add Bash Completion for the following
 # - [ ] ruby
