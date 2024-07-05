@@ -11,7 +11,7 @@ config_folder=~/dotfiles/config
 
 echo -e "\n${GREEN}Installing Gnome Shell Extensions...${NC}"
 rm -f ./install-gnome-extensions.sh &&
-	wget -N -q "https://raw.githubusercontent.com/cyfrost/install-gnome-extensions/master/install-gnome-extensions.sh" -O ./install-gnome-extensions.sh &&
+	wget -N -q "https://raw.githubusercontent.com/ToasterUwU/install-gnome-extensions/master/install-gnome-extensions.sh" -O ./install-gnome-extensions.sh &&
 	chmod +x install-gnome-extensions.sh &&
 	./install-gnome-extensions.sh --enable --file ~/dotfiles/lists/shell-extensions.txt &&
 	rm ./install-gnome-extensions.sh &&
