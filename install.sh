@@ -32,6 +32,20 @@ sudo add-apt-repository ppa:o2sh/onefetch
 sudo apt-get update
 sudo apt install onefetch
 
+# install gh cli
+if ! command -v gh &>/dev/null; then
+  echo -e "\n${GREEN}Installing GitHub CLI...${NC}"
+  curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg &&
+    sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg &&
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null &&
+    sudo apt update &&
+    sudo apt install gh -y &&
+    gh extension install mislav/gh-license
+fi
+
+# Generate & Add SSH key for github access
+./generate-ssh-key.sh
+
 # Install or update nvm
 ./scripts/install-nvm.sh
 source ~/.bashrc
@@ -60,17 +74,6 @@ if ! command -v deno &>/dev/null; then
   curl -fsSL https://deno.land/install.sh | sh &&
     export DENO_INSTALL="$HOME/.deno" &&
     export PATH="$DENO_INSTALL/bin:$PATH"
-fi
-
-# install gh cli
-if ! command -v gh &>/dev/null; then
-  echo -e "\n${GREEN}Installing GitHub CLI...${NC}"
-  curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg &&
-    sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg &&
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null &&
-    sudo apt update &&
-    sudo apt install gh -y &&
-    gh extension install mislav/gh-license
 fi
 
 # install vs code
