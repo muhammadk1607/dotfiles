@@ -86,7 +86,6 @@ alias apti="apt list --installed"
 alias pn="pnpm"
 alias pnx="pnpm dlx"
 alias open="xdg-open"
-alias proton="protonvpn-cli"
 alias bat="batcat --paging=never --theme=Dracula"
 
 ##############################################################################
