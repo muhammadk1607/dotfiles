@@ -202,6 +202,9 @@ mkv_to_mp4() {
 # 04. Setup Environments                                                     #
 ##############################################################################
 
+# Bun
+export PATH="$HOME/.bun/bin:$PATH"
+
 # Turso
 export PATH="/home/muhammad/.turso:$PATH"
 
@@ -294,3 +297,7 @@ cdnvm() {
 }
 alias cd='cdnvm'
 cd "$PWD" || exit
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH=$BUN_INSTALL/bin:$PATH

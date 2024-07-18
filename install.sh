@@ -57,6 +57,9 @@ source ~/.bashrc
 # Install rbenv and latest ruby
 ./scripts/install-rbenv.sh
 
+# Install Bun
+curl -fsSL https://bun.sh/install | bash
+
 # Install Deno
 if ! command -v deno &>/dev/null; then
   echo -e "\n${GREEN}Installing Deno...${NC}"
