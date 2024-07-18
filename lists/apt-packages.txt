@@ -10,6 +10,8 @@ libreadline-dev
 zlib1g-dev
 libsqlite3-dev
 gnome-tweaks
+python3
+python3-venv
 python-is-python3
 ffmpeg
 libmagickwand-dev
