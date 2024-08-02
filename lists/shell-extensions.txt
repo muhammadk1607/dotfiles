@@ -9,3 +9,4 @@ https://extensions.gnome.org/extension/4506/simple-system-monitor/
 https://extensions.gnome.org/extension/19/user-themes/
 https://extensions.gnome.org/extension/3952/workspace-indicator/
 https://extensions.gnome.org/extension/1319/gsconnect/
+https://extensions.gnome.org/extension/3193/blur-my-shell/
