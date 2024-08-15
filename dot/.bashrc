@@ -298,6 +298,10 @@ cdnvm() {
 alias cd='cdnvm'
 cd "$PWD" || exit
 
+
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH=$BUN_INSTALL/bin:$PATH
+
+# Setup autocorrect alias `fuck`
+eval "$(thefuck --alias)"

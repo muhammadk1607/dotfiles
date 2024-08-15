@@ -27,6 +27,10 @@ type -p xargs >/dev/null || sudo apt install xargs -y
 echo -e "\n${GREEN}Setting Up APT Packages...${NC}"
 xargs sudo apt install -y < lists/apt-packages.txt
 
+# Install pip packages
+echo -e "\n${GREEN}Installing PIP Packages...${NC}"
+pip install -r lists/pip-packages.txt
+
 # Install onefetch https://github.com/o2sh/onefetch
 sudo add-apt-repository ppa:o2sh/onefetch
 sudo apt-get update
