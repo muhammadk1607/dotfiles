@@ -10,6 +10,9 @@ terminal-title-style='small'
 theme-variant='light'
 window-style='normal'
 
+[keybindings]
+terminal-insert-password='<Primary>p'
+
 [profiles/2b7c4080-0ddd-46c5-8f23-563fd3ba789d]
 background-color='#1E1F29'
 background-transparency-percent=15
@@ -28,7 +31,7 @@ foreground-color='#F8F8F2'
 highlight-colors-set=false
 palette=['#000000', '#FF5555', '#50FA7B', '#F1FA8C', '#BD93F9', '#FF79C6', '#8BE9FD', '#BBBBBB', '#555555', '#FF5555', '#50FA7B', '#F1FA8C', '#BD93F9', '#FF79C6', '#8BE9FD', '#FFFFFF']
 scroll-on-output=true
-terminal-bell='sound'
+terminal-bell='icon'
 use-system-font=false
 use-theme-colors=false
 visible-name='Default'
