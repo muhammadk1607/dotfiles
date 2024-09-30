@@ -76,6 +76,9 @@ sudo ufw allow 5000:5050/udp
 sudo ufw allow 8000:8999/tcp
 sudo ufw allow 8000:8999/udp
 
+echo -e "\n${GREEN}Configuring SysCTL...${NC}"
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+
 echo -e "\n${GREEN}Setting Tilix as the default...${NC}"
 sudo update-alternatives --set x-terminal-emulator /usr/bin/tilix.wrapper &&
 	sudo apt install python3-pip python3-nautilus &&
