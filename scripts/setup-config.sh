@@ -64,8 +64,6 @@ dconf load /org/gnome/system/ <"$config_folder"/system.dconf
 dconf load /com/gexperts/Tilix/ <"$config_folder"/tilix.dconf
 dconf load /org/gnome/weather/ <"$config_folder"/weather.dconf
 
-# TODO setup gnome shell extensions status bar placement
-
 echo -e "\n${GREEN}Setting Up UFW firewall...${NC}"
 sudo ufw enable
 sudo ufw allow ssh
