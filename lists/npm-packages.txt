@@ -2,7 +2,6 @@ nodemon
 typescript
 ts-node
 npm-check
-electron
 eslint
 eslint-plugin-jsdoc
 tldr
@@ -11,7 +10,6 @@ ngrok
 vsce
 @svgr/cli
 expo-cli
-create-expo-app
 eas-cli
 dotenv-vault
 npkill

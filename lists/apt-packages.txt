@@ -31,3 +31,4 @@ gnupg
 vlc
 adb
 webp
+tree
