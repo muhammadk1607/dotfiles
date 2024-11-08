@@ -1,4 +1,3 @@
-nodemon
 typescript
 ts-node
 npm-check
@@ -8,15 +7,10 @@ tldr
 jsdoc
 ngrok
 vsce
-@svgr/cli
-expo-cli
 eas-cli
-dotenv-vault
-npkill
 stylelint
 stylelint-config-standard
 stylelint-config-standard-scss
-pm2
 concurrently
 sharp-cli
 tinypng-cli
