@@ -13,7 +13,7 @@
   gpgsign = true
 [user]
   email = muhammadkhan1607@gmail.com
-  name = mbm_1607
+  name = muhammadk1607
   signingkey = ~/.ssh/id-github.pub
 [pull]
   rebase = false
