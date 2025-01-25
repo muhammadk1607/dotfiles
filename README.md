@@ -29,7 +29,6 @@ It performs the following actions:
 - Installs and sets up my dev environment.
   - VSCode
   - Postman
-  - Anydesk
   - MongoDB Compass
   - Vivaldi
   - Slack
