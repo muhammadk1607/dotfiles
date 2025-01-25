@@ -99,28 +99,6 @@ if ! command -v postman &>/dev/null; then
 		source ~/.bashrc
 fi
 
-# install mongodb server
-if ! command -v mongod &>/dev/null; then
-	echo -e "\n${GREEN}Installing MongoDB Server...${NC}"
-	wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add - &&
-		echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list &&
-		sudo apt -qq update &&
-		sudo apt -qq install -y mongodb-org &&
-		sudo systemctl daemon-reload &&
-		sudo systemctl start mongod
-fi
-
-# install mongodb compass
-if ! command -v mongodb-compass &>/dev/null; then
-	echo -e "\n${GREEN}Installing MongoDB Compass...${NC}"
-	repo="mongodb-js/compass" &&
-		tag="$(latest_git_release "$repo")" &&
-		version="${tag:1}" &&
-		wget -q --show-progress "https://github.com/${repo}/releases/download/${tag}/mongodb-compass_${version}_amd64.deb" -O compass.deb &&
-		sudo apt -qq install -y ./compass.deb &&
-		rm ./compass.deb
-fi
-
 # install vivaldi
 if ! command -v vivaldi-stable &>/dev/null; then
 	echo -e "\n${GREEN}Installing Vivaldi...${NC}"
