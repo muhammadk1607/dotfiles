@@ -16,3 +16,4 @@ sharp-cli
 tinypng-cli
 firebase-tools
 turbo
+pm2
