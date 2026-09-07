@@ -1,154 +1,118 @@
 #!/usr/bin/env bash
-############################
-# This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
-# It also installs the system programming essentials for myself
-# It installs all the packages I need for my development environment
-############################
+set -euo pipefail
+############################################################################
+# Provisions a Pop!_OS 24.04 (COSMIC) machine from scratch.
+#
+# Every step is idempotent, so this is safe to re-run to pick up changes.
+#
+#   ./install.sh                 run everything
+#   ./install.sh --list          show the available steps
+#   ./install.sh dotfiles mise   run only the named steps
+#   ./install.sh --skip docker   run everything except the named steps
+############################################################################
 
-# shellcheck source=SCRIPTDIR/scripts/latest-git-release.sh
-source scripts/latest-git-release.sh
+# shellcheck source=SCRIPTDIR/lib/common.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/common.sh"
 
-# shellcheck source=/dev/null
+# Ordered list of steps: <name>:<script>
+STEPS=(
+	"dotfiles:link-dotfiles.sh"
+	"apt:install-apt.sh"
+	"gh:install-gh.sh"
+	"ssh:generate-ssh-key.sh"
+	"mise:install-mise.sh"
+	"docker:install-docker.sh"
+	"vscode:install-vscode.sh"
+	"flatpak:install-flatpak.sh"
+	"apps:install-apps.sh"
+	"fonts:install-fonts.sh"
+	"completions:install-completions.sh"
+	"assets:move-assets.sh"
+	"cosmic:setup-cosmic.sh"
+	"system:setup-system.sh"
+)
 
-GREEN='\e[32m'
-NC='\e[0m'
+usage() {
+	cat <<-EOF
+	Usage: ./install.sh [--list] [--skip STEP]... [STEP...]
 
-# Setup Dotfiles
-echo -e "\n${GREEN}Creating symlinks for dotfiles...${NC}"
-cp -rsTvf ~/dotfiles/dot ~/
+	With no arguments, every step runs in order.
+	Naming steps runs only those. --skip excludes steps from a full run.
 
-# Check if curl is installed, if not install it
-type -p curl >/dev/null || sudo apt install curl -y
+	Steps:
+	EOF
+	local entry
+	for entry in "${STEPS[@]}"; do
+		printf '  %-12s %s\n' "${entry%%:*}" "scripts/${entry#*:}"
+	done
+}
 
-# Check if xargs is installed, if not install it
-type -p xargs >/dev/null || sudo apt install xargs -y
+selected=()
+skipped=()
 
-# Install apt packages
-echo -e "\n${GREEN}Setting Up APT Packages...${NC}"
-xargs sudo apt install -y < lists/apt-packages.txt
+while [ $# -gt 0 ]; do
+	case "$1" in
+		-h | --help) usage; exit 0 ;;
+		--list) usage; exit 0 ;;
+		--skip)
+			[ $# -ge 2 ] || die "--skip needs a step name"
+			skipped+=("$2")
+			shift 2
+			;;
+		-*) die "Unknown option: $1 (try --help)" ;;
+		*) selected+=("$1"); shift ;;
+	esac
+done
 
-# Install pip packages
-echo -e "\n${GREEN}Installing PIP Packages...${NC}"
-pip install -r lists/pip-packages.txt
+# Validate names up front so a typo fails immediately rather than 20 minutes in.
+known_step() {
+	local entry
+	for entry in "${STEPS[@]}"; do
+		[ "${entry%%:*}" = "$1" ] && return 0
+	done
+	return 1
+}
+for name in "${selected[@]}" "${skipped[@]}"; do
+	known_step "$name" || die "Unknown step: $name (try --list)"
+done
 
-# Install onefetch https://github.com/o2sh/onefetch
-sudo add-apt-repository ppa:o2sh/onefetch
-sudo apt-get update
-sudo apt install onefetch
+wants() {
+	local name="$1" entry
+	for entry in "${skipped[@]}"; do
+		[ "$entry" = "$name" ] && return 1
+	done
+	[ ${#selected[@]} -eq 0 ] && return 0
+	for entry in "${selected[@]}"; do
+		[ "$entry" = "$name" ] && return 0
+	done
+	return 1
+}
 
-# install gh cli
-if ! command -v gh &>/dev/null; then
-	echo -e "\n${GREEN}Installing GitHub CLI...${NC}"
-	(type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
-	&& sudo mkdir -p -m 755 /etc/apt/keyrings \
-	&& wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
-	&& sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-	&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-	&& sudo apt update \
-	&& sudo apt install gh -y
-fi
+require_not_root
+have curl || sudo apt-get install -y curl
+keep_sudo_alive
 
-# Generate & Add SSH key for github access
-./scripts/generate-ssh-key.sh
+failed=()
+for entry in "${STEPS[@]}"; do
+	name="${entry%%:*}"
+	script="${entry#*:}"
+	wants "$name" || continue
 
-# Install or update nvm
-./scripts/install-nvm.sh
-source ~/.bashrc
-
-# Install docker and docker-compose
-# ? This will require a reboot for the user to be added to the docker group
-./scripts/install-docker.sh
-
-# Install rbenv and latest ruby
-./scripts/install-rbenv.sh
-
-# Install Bun
-curl -fsSL https://bun.sh/install | bash
-
-# Install Deno
-if ! command -v deno &>/dev/null; then
-	echo -e "\n${GREEN}Installing Deno...${NC}"
-	curl -fsSL https://deno.land/install.sh | sh &&
-		export DENO_INSTALL="$HOME/.deno" &&
-		export PATH="$DENO_INSTALL/bin:$PATH"
-fi
-
-# install vs code
-./scripts/install-vscode.sh
-
-# install remmina
-if ! command -v remmina &>/dev/null; then
-	echo -e "\n${GREEN}Installing Remmina...${NC}"
-	sudo apt-add-repository ppa:remmina-ppa-team/remmina-next &&
-		sudo apt update &&
-		sudo apt install remmina remmina-plugin-rdp remmina-plugin-secret
-fi
-
-# install obs studio
-if ! command -v obs &>/dev/null; then
-	echo -e "\n${GREEN}Installing OBS Studio...${NC}"
-	sudo add-apt-repository ppa:obsproject/obs-studio
-	sudo apt update
-	sudo apt install ffmpeg obs-studio
-fi
-
-# install postman
-if ! command -v postman &>/dev/null; then
-	echo -e "\n${GREEN}Installing Postman...${NC}"
-	curl https://gist.githubusercontent.com/SanderTheDragon/1331397932abaa1d6fbbf63baed5f043/raw/postman-deb.sh | sh &&
-		source ~/.bashrc
-fi
-
-# install vivaldi
-if ! command -v vivaldi-stable &>/dev/null; then
-	echo -e "\n${GREEN}Installing Vivaldi...${NC}"
-	wget -qO- https://repo.vivaldi.com/archive/linux_signing_key.pub | gpg --dearmor | sudo dd of=/usr/share/keyrings/vivaldi-browser.gpg &&
-		echo "deb [arch=amd64 signed-by=/usr/share/keyrings/vivaldi-browser.gpg] https://repo.vivaldi.com/archive/deb/ stable main" | sudo tee /etc/apt/sources.list.d/vivaldi.list &&
-		sudo apt update &&
-		sudo apt install vivaldi-stable
-fi
-
-# install slack
-if ! command -v slack &>/dev/null; then
-	echo -e "\n${GREEN}Installing Slack...${NC}"
-	version="$(curl --silent https://slack.com/downloads/linux --stderr - | grep -Po -m 1 "(?<=Version )[0-9.]*")" &&
-		wget -q --show-progress "https://downloads.slack-edge.com/releases/linux/${version}/prod/x64/slack-desktop-${version}-amd64.deb" -O slack.deb &&
-		sudo apt -qq install -y ./slack.deb &&
-		rm ./slack.deb
-fi
-
-# install proton vpn cli
-./scripts/install-proton-vpn.sh
+	if ! "$DOTFILES_ROOT/scripts/$script"; then
+		err "Step '$name' failed"
+		failed+=("$name")
+	fi
+done
 
 echo
-read -p "Do you want to install Turso CLI (y/n)? " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-	curl -sSfL https://get.tur.so/install.sh | bash
+if [ ${#failed[@]} -gt 0 ]; then
+	err "Finished with failures in: ${failed[*]}"
+	err "Re-run just those with: ./install.sh ${failed[*]}"
+	exit 1
 fi
 
-echo
-read -p "Do you want to install FlyCTL CLI (y/n)? " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-	curl -L https://fly.io/install.sh | sh
+step "Done"
+info "Open a new shell (or 'exec bash') to pick up the new environment."
+if ! id -nG "$USER" | grep -qw docker; then
+	info "Log out and back in to activate docker group membership."
 fi
-
-## TODO Add JetBrains Toolbox installation
-### TODO Install Android Studio
-### TODO Install DataGrip
-### TODO Install Gradle
-
-# Setup Configs for theming and other stuff
-scripts/setup-config.sh
-
-# Setup Fonts
-scripts/install-fonts.sh
-
-# Install Completions
-scripts/install-completions.sh
-
-# Move assets i.e wallpapers, icons, etc
-scripts/move-assets.sh
-
-source ~/.bashrc

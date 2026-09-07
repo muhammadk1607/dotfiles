@@ -1,22 +1,36 @@
 #!/usr/bin/env bash
+set -euo pipefail
+# shellcheck source=SCRIPTDIR/../lib/common.sh
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
 
-# shellcheck source=latest-git-release.sh
-source ~/dotfiles/scripts/latest-git-release.sh
+step "Installing fonts"
 
 folder="$HOME/.local/share/fonts"
+mkdir -p "$folder"
 
-# Install iosevka fonts
-# Term Slab for Terminal Use
-# Slab for Normal Use
+# Iosevka: Slab for UI, Term Slab for the terminal.
+# Upstream renamed its release archives more than once — SuperTTC-* became
+# PkgTTC-* — so resolve the asset name from the release itself rather than
+# guessing, and fail loudly instead of silently installing nothing.
 repo="be5invis/Iosevka"
-tag="$(latest_git_release $repo)"
-version="${tag:1}"
-url_prefix="https://github.com/$repo/releases/download"
-name_prefix="SuperTTC-SGr-Iosevka"
-if [ -n "$version" ]; then
-  wget -q --show-progress "$url_prefix/$tag/${name_prefix}FixedSlab-$version.zip" -O slab.zip &&
-    wget -q --show-progress "$url_prefix/$tag/${name_prefix}TermSlab-$version.zip" -O term.zip &&
-    unzip slab.zip -d "$folder" "*.ttc" &&
-    unzip term.zip -d "$folder" "*.ttc" &&
-    rm slab.zip term.zip
-fi
+tag="$(latest_git_release "$repo")"
+version="${tag#v}"
+
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+
+for variant in FixedSlab TermSlab; do
+	archive="PkgTTC-SGr-Iosevka${variant}-${version}.zip"
+	url="https://github.com/${repo}/releases/download/${tag}/${archive}"
+
+	info "Downloading Iosevka ${variant} ${version}"
+	if ! curl -fsSL "$url" -o "$tmp/${variant}.zip"; then
+		warn "Could not download ${archive}."
+		warn "Check the asset names at https://github.com/${repo}/releases/tag/${tag}"
+		continue
+	fi
+	unzip -oq "$tmp/${variant}.zip" -d "$folder" '*.ttc'
+done
+
+fc-cache -f "$folder" >/dev/null
+info "Font cache rebuilt"

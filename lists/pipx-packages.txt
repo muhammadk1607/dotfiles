@@ -1,0 +1,6 @@
+# Python CLI tools, installed with pipx into isolated venvs.
+# 24.04 enforces PEP 668, so `pip install --user` into the system interpreter
+# no longer works; pipx is the supported route for standalone CLI tools.
+
+uv
+ruff

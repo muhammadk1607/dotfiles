@@ -1,34 +1,28 @@
 #!/usr/bin/env bash
+set -euo pipefail
+# shellcheck source=SCRIPTDIR/../lib/common.sh
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
 
-GREEN='\e[32m'
-PURPLE='\e[35m'
-NC='\e[0m'
+step "Setting up Docker"
 
-# shellcheck source=latest-git-release.sh
-source ~/dotfiles/scripts/latest-git-release.sh
+if have docker; then
+	skip "docker"
+else
+	# Pop!_OS reports itself as `pop` with no Docker repo of its own, so the
+	# repo is keyed off the Ubuntu codename it is built on (noble for 24.04).
+	codename="$(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")"
 
-# Install Docker
-if ! command -v docker &>/dev/null; then
-  echo -e "\n${GREEN}Installing Docker...${NC}"
-  sudo apt -qq update &&
-    sudo apt -qq install -y apt-transport-https ca-certificates curl gnupg lsb-release &&
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg &&
-    echo \
-      "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-      $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list &&
-    sudo apt -qq update &&
-    sudo apt -qq install -y docker-ce docker-ce-cli containerd.io &&
-    sudo usermod -aG docker "$USER"
-    echo -e "\n${GREEN}Docker installed successfully.${NC}"
-    echo -e "\n${PURPLE}Please enter your password to continue.${NC}"
-    exec su -l "$USER"
+	add_apt_repo "docker" \
+		"https://download.docker.com/linux/ubuntu/gpg" \
+		"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu ${codename} stable"
+
+	# compose is a CLI plugin now (`docker compose`); the standalone v1 binary
+	# this repo used to fetch is end-of-life.
+	apt_install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 fi
 
-# Install Docker Compose
-if ! command -v docker-compose &>/dev/null; then
-  echo -e "\n${GREEN}Installing Docker Compose...${NC}"
-
-  version="$(latest_git_release "docker/compose")" &&
-    sudo curl -L "https://github.com/docker/compose/releases/download/${version}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose &&
-    sudo chmod +x /usr/local/bin/docker-compose
+if getent group docker >/dev/null && ! id -nG "$USER" | grep -qw docker; then
+	info "Adding $USER to the docker group"
+	sudo usermod -aG docker "$USER"
+	warn "Log out and back in (or reboot) for docker group membership to take effect."
 fi

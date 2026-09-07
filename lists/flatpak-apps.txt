@@ -1,0 +1,25 @@
+# Flatpak applications.
+#
+# Format:  <app-id> [remote]      — remote defaults to "flathub"
+#
+# COSMIC applets ship as flatpaks and replace the GNOME Shell extensions this
+# repo used to install (lists/shell-extensions.txt, now removed). Most live in
+# Pop's own "cosmic" remote rather than on Flathub.
+
+## COSMIC applets and tools
+dev.edfloreshz.CosmicTweaks
+best.ellie.StartupConfiguration
+dev.DBrox.CosmicPrivacyIndicator                        cosmic
+io.github.cosmic_utils.minimon-applet                   cosmic
+io.github.crocodile.cosmic-ext-applet-workspace-icons   cosmic
+io.github.k33wee.clippy-land                            cosmic
+io.github.nalladev.CosmicExtAppletEyedropper            cosmic
+
+## Applications
+com.bitwarden.desktop
+com.obsproject.Studio
+com.spotify.Client
+org.gimp.GIMP
+org.kde.krita
+org.videolan.VLC
+org.gnome.Maps

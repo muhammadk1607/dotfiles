@@ -19,7 +19,7 @@ fi
 cd "$(dirname "$0")"
 
 main() {
-  echo do awesome stuff
+  echo 'do awesome stuff'
 }
 
 main "$@"

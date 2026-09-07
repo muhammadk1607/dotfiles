@@ -1,34 +1,73 @@
+# Packages installed with `apt`. Blank lines and # comments are ignored.
+# Verified available on Pop!_OS / Ubuntu 24.04 (noble).
+
+## Build toolchain — also covers what mise needs to compile Ruby and Python
 build-essential
-direnv
-httpie
-bat
-tilix
 gcc
 make
+pkg-config
+autoconf
 libssl-dev
 libreadline-dev
 zlib1g-dev
 libsqlite3-dev
-gnome-tweaks
+libyaml-dev
+libffi-dev
+libbz2-dev
+liblzma-dev
+libncurses-dev
+libxml2-dev
+libxslt1-dev
+uuid-dev
+tk-dev
+curl
+wget
+git
+unzip
+gnupg
+ca-certificates
+
+## Python — system interpreter only; project runtimes come from mise.
+## 24.04 marks this install PEP 668 externally-managed, so tools go via pipx.
 python3
 python3-dev
-python3-setuptools
-python3-pip
 python3-venv
+python3-pip
+pipx
 python-is-python3
-ffmpeg
-libmagickwand-dev
-gnome-shell-extension-appindicator
-gir1.2-appindicator3-0.1
+
+## Java — 24.04 ships 21 as the default LTS (was 17)
+openjdk-21-jdk
+openjdk-21-jre
+
+## Shell and CLI
+bat
+eza
+fd-find
+ripgrep
+zoxide
+direnv
+httpie
 jq
-libyaml-dev
-xclip
-neofetch
-blueman
-openjdk-17-jdk
-openjdk-17-jre
-gnupg
-vlc
-adb
-webp
 tree
+hyperfine
+shellcheck
+bash-completion
+
+## Clipboard — the session is Wayland, so wl-clipboard replaces xclip.
+## xclip stays for the occasional XWayland-only tool.
+wl-clipboard
+xclip
+
+## Media
+ffmpeg
+webp
+libmagickwand-dev
+
+## Android / mobile
+adb
+fastboot
+
+## Hardware and system
+blueman
+net-tools

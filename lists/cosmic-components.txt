@@ -1,0 +1,40 @@
+# COSMIC config components tracked in this repo.
+#
+# COSMIC stores settings as a directory tree under ~/.config/cosmic/, one plain
+# file per key, rather than a single dconf database. Only components holding
+# real choices are listed here — CosmicTheme.Dark / CosmicTheme.Light are
+# derived from the *.Builder entries and are deliberately left out.
+
+com.system76.CosmicTk
+com.system76.CosmicComp
+com.system76.CosmicPanel
+com.system76.CosmicPanel.Panel
+com.system76.CosmicPanel.Dock
+com.system76.CosmicPanelButton
+com.system76.CosmicAppList
+com.system76.CosmicAppLibrary
+com.system76.CosmicTerm
+com.system76.CosmicEdit
+com.system76.CosmicFiles
+com.system76.CosmicIdle
+com.system76.CosmicNotifications
+com.system76.CosmicWorkspaces
+com.system76.CosmicSettings
+com.system76.CosmicSettings.Shortcuts
+com.system76.CosmicSettings.Wallpaper
+com.system76.CosmicSettings.WindowRules
+com.system76.CosmicBackground
+com.system76.CosmicTheme.Mode
+com.system76.CosmicTheme.Dark.Builder
+com.system76.CosmicTheme.Light.Builder
+com.system76.CosmicAppletTime
+com.system76.CosmicAppletAudio
+com.system76.CosmicAppletBattery
+
+# Third-party applets
+dev.edfloreshz.CosmicTweaks
+dev.edfloreshz.CosmicTweaks.ColorScheme
+io.github.cosmic_utils.minimon-applet
+io.github.cosmic_utils.minimon-applet-panel
+io.github.crocodile.cosmic-ext-applet-workspace-icons
+dev.DBrox.CosmicPrivacyIndicator

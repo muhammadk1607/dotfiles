@@ -1,1 +1,3 @@
+# Follow `source` directives, resolving SCRIPTDIR relative to each script.
 external-sources=true
+source-path=SCRIPTDIR

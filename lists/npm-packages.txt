@@ -1,19 +1,33 @@
+# Global npm packages, installed against the mise-managed default node.
+
+## Language tooling
 typescript
+tsx
 ts-node
-npm-check
+
+## Linting and formatting
 eslint
 eslint-plugin-jsdoc
-tldr
 jsdoc
-ngrok
-vsce
-eas-cli
 stylelint
 stylelint-config-standard
 stylelint-config-standard-scss
+
+## Build and process management
+turbo
 concurrently
+pm2
+npm-check
+
+## Services and deploys
+firebase-tools
+eas-cli
+ngrok
+
+## Media
 sharp-cli
 tinypng-cli
-firebase-tools
-turbo
-pm2
+
+## Misc
+tldr
+@vscode/vsce

@@ -1,310 +1,303 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2148
 
 ##############################################################################
 # Sections:                                                                  #
-#   01. General ................. General Bash behavior                      #
+#   01. General ................. Bash behaviour and the prompt              #
 #   02. Aliases ................. Aliases                                    #
 #   03. Functions ............... Helper functions                           #
-#   04. Setup Environments ...... rbenv and bash setup                       #
+#   04. Environment ............. PATH, runtimes and shell integrations      #
 ##############################################################################
+
+# Only continue for interactive shells.
+case $- in
+	*i*) ;;
+	*) return ;;
+esac
 
 ##############################################################################
 # 01. General                                                                #
 ##############################################################################
+
+HISTCONTROL=ignoreboth:erasedups
+HISTSIZE=100000
+HISTFILESIZE=200000
+shopt -s histappend checkwinsize globstar
 
 WHITE='\[\e[1;37m\]'
 YELLOW='\[\e[1;33m\]'
 BLUE='\[\e[0;36m\]'
 PURPLE='\[\e[1;34m\]'
 COLOR_RESET='\[\e[0m\]'
-NODE='\[\e[1;32m'
-RUBY_VERSION='\[\e[1;31m\]'
+NODE='\[\e[1;32m\]'
+RUBY='\[\e[1;31m\]'
 PYTHON='\[\e[1;36m\]'
 
+git_prompt() {
+	local branch status
+	branch="$(git symbolic-ref --short -q HEAD 2>/dev/null)" || return
 
-function git_prompt() {
-	# GIT PROMPT
-	COLOR_GIT_CLEAN='\[\e[0;32m\]'
-	COLOR_GIT_MODIFIED='\[\e[0;31m\]'
-	COLOR_GIT_STAGED='\[\e[0;33m\]'
+	# --porcelain is a stable, parseable format; the old version grepped
+	# human-readable `git status` output, which breaks under other locales.
+	status="$(git status --porcelain 2>/dev/null)"
 
+	local COLOR_GIT_CLEAN='\[\e[0;32m\]'
+	local COLOR_GIT_MODIFIED='\[\e[0;31m\]'
+	local COLOR_GIT_STAGED='\[\e[0;33m\]'
 
-	if [ -e ".git" ]; then
-		branch_name=$(git symbolic-ref -q HEAD)
-		branch_name=${branch_name##refs/heads/}
-		branch_name=${branch_name:-HEAD}
-
-		echo -n "-["
-
-		if [[ $(git status 2> /dev/null | tail -n1) = *"nothing to commit"* ]]; then
-		echo -n "$COLOR_GIT_CLEAN$branch_name$COLOR_RESET"
-		elif [[ $(git status 2> /dev/null | head -n5) = *"Changes to be committed"* ]]; then
-		echo -n "$COLOR_GIT_STAGED$branch_name$COLOR_RESET"
-		else
-		echo -n "$COLOR_GIT_MODIFIED$branch_name*$COLOR_RESET"
-		fi
-
-		echo -n "$BLUE]$COLOR_RESET"
+	if [ -z "$status" ]; then
+		printf -- '-[%s%s%s%s]%s' "$COLOR_GIT_CLEAN" "$branch" "$COLOR_RESET" "$BLUE" "$COLOR_RESET"
+	elif grep -q '^[MADRC]' <<<"$status"; then
+		printf -- '-[%s%s%s%s]%s' "$COLOR_GIT_STAGED" "$branch" "$COLOR_RESET" "$BLUE" "$COLOR_RESET"
+	else
+		printf -- '-[%s%s*%s%s]%s' "$COLOR_GIT_MODIFIED" "$branch" "$COLOR_RESET" "$BLUE" "$COLOR_RESET"
 	fi
 }
 
-function node_version() {
-	# Get the node version currently in use
-	echo "$BLUE─[$COLOR_RESET$NODE⬢  - $(node -v | cut -d'v' -f2-)$COLOR_RESET$BLUE]"
+# Runtime versions are shown only in directories that actually use that
+# runtime. Previously every prompt shell-outed to node, rbenv and python
+# regardless, which cost three process spawns per prompt in every directory.
+runtime_prompt() {
+	local segments=''
+
+	# Each segment needs both a project marker in the cwd and the runtime
+	# actually installed, so the prompt never shows a half-empty version.
+	if [ -e package.json ] || [ -e .nvmrc ] || [ -e node_modules ]; then
+		local node_version
+		node_version="$(node -v 2>/dev/null)" &&
+			segments+="$BLUE─[$COLOR_RESET$NODE⬢  - ${node_version#v}$COLOR_RESET$BLUE]"
+	fi
+	if [ -e Gemfile ] || [ -e .ruby-version ]; then
+		local ruby_version
+		ruby_version="$(ruby -e 'print RUBY_VERSION' 2>/dev/null)" &&
+			segments+="$BLUE─[$COLOR_RESET$RUBY⬘  - ${ruby_version}$COLOR_RESET$BLUE]"
+	fi
+	if [ -e pyproject.toml ] || [ -e requirements.txt ] || [ -e .python-version ] || [ -n "${VIRTUAL_ENV:-}" ]; then
+		local python_version
+		python_version="$(python --version 2>/dev/null)" &&
+			segments+="$BLUE─[$COLOR_RESET$PYTHON🐍 - ${python_version#Python }$COLOR_RESET$BLUE]"
+	fi
+
+	printf '%s' "$segments"
 }
 
-function ruby_version() {
-	echo "$BLUE─[$COLOR_RESET${RUBY_VERSION}⬘   - $(rbenv version | cut -d' ' -f1)$COLOR_RESET$BLUE]"
-}
-
-function python_version() {
-	echo "$BLUE─[$COLOR_RESET${PYTHON}🐍 - $(python --version | cut -d' ' -f2-)$COLOR_RESET$BLUE]"
-}
-
-function prompt() {
-	PS1="\n$BLUE┌─[$COLOR_RESET$YELLOW\u$COLOR_RESET$BLUE @ $COLOR_RESET$YELLOW\h$COLOR_RESET$BLUE]─[$COLOR_RESET$PURPLE\w$COLOR_RESET$BLUE]$(git_prompt)$(node_version)$(ruby_version)$(python_version)$COLOR_RESET\n$BLUE└─[$COLOR_RESET$WHITE\$$COLOR_RESET$BLUE]─› $COLOR_RESET"
+prompt() {
+	PS1="\n$BLUE┌─[$COLOR_RESET$YELLOW\u$COLOR_RESET$BLUE @ $COLOR_RESET$YELLOW\h$COLOR_RESET$BLUE]─[$COLOR_RESET$PURPLE\w$COLOR_RESET$BLUE]$(git_prompt)$(runtime_prompt)$COLOR_RESET\n$BLUE└─[$COLOR_RESET$WHITE\$$COLOR_RESET$BLUE]─› $COLOR_RESET"
 }
 
 PROMPT_COMMAND=prompt
 
 export EDITOR="code -w"
+export VISUAL="$EDITOR"
 
 ##############################################################################
 # 02. Aliases                                                                #
 ##############################################################################
 
-alias install-postman-deb='curl https://gist.githubusercontent.com/SanderTheDragon/1331397932abaa1d6fbbf63baed5f043/raw/postman-deb.sh | sh'
-
-# some more ls aliases
-alias ll="ls -alF --color=auto"
-alias la="ls -A --color=auto"
-alias l="ls -CF --color=auto"
+alias ll="eza -al --group-directories-first --icons"
+alias la="eza -a --group-directories-first --icons"
+alias l="eza --group-directories-first --icons"
+alias lt="eza --tree --level=2 --icons"
 alias ls="ls --color=auto"
+
 alias ssh-hosts="grep -P \"^Host ([^*]+)$\" \$HOME/.ssh/config | sed 's/Host //'"
-alias git-open="git repo view --web"
+alias git-open="gh repo view --web"
 alias apti="apt list --installed"
 alias pn="pnpm"
 alias pnx="pnpm dlx"
 alias open="xdg-open"
-alias bat="batcat --paging=never --theme=Dracula"
+
+# Ubuntu ships bat as batcat and fd as fdfind; install-apt.sh also symlinks
+# them into /usr/local/bin, so these are just the preferred defaults.
+alias bat="bat --paging=never --theme=Dracula"
+alias cat="bat --plain --paging=never"
+
+# Wayland clipboard
+alias pbcopy="wl-copy"
+alias pbpaste="wl-paste"
+
+alias dc="docker compose"
 
 ##############################################################################
 # 03. Functions                                                              #
 ##############################################################################
 
-# update the environment
+# Update everything this machine installs.
 update() {
+	echo "› apt"
 	sudo apt update &&
 		sudo apt full-upgrade -y --allow-downgrades --fix-missing &&
-		sudo apt autoremove &&
-		~/dotfiles/scripts/install-nvm.sh &&
-		nvm-update lts/* &&
-		nvm use lts/* &&
-		npm-check -gu &&
-		nvm use default &&
-		install-postman-deb &&
-		deno upgrade &&
-		git -C "$(rbenv root)"/plugins/ruby-build pull &&
-		git -C "$(rbenv root)"/plugins/rbenv-vars pull &&
-		tldr --update &&
-		gh extension upgrade --all
+		sudo apt autoremove -y || return
+
+	if command -v flatpak >/dev/null; then
+		echo "› flatpak"
+		flatpak update -y
+	fi
+
+	if command -v mise >/dev/null; then
+		echo "› mise"
+		mise --yes self-update 2>/dev/null || true
+		mise upgrade --bump
+		mise --yes prune
+	fi
+
+	if command -v npm >/dev/null; then
+		echo "› npm globals"
+		npm-check -gu
+	fi
+
+	command -v deno >/dev/null && { echo "› deno"; deno upgrade; }
+	command -v bun >/dev/null && { echo "› bun"; bun upgrade; }
+	command -v pipx >/dev/null && { echo "› pipx"; pipx upgrade-all; }
+	command -v gh >/dev/null && { echo "› gh extensions"; gh extension upgrade --all; }
+	command -v tldr >/dev/null && { echo "› tldr"; tldr --update; }
 }
 
 # Make a directory and move into it
-mkcdir () {
-	mkdir -p -- "$1" && cd -P -- "$1" || exit
+mkcdir() {
+	mkdir -p -- "$1" && cd -P -- "$1" || return
 }
 
-# Kill a process that is holding the port number supplied
+# Kill whatever is listening on a TCP port
 killport() {
-	sudo kill -9 $(sudo fuser -n tcp "$1" 2> /dev/null);
+	[ -n "${1:-}" ] || { echo "Usage: killport <port>"; return 1; }
+	local pids
+	pids="$(sudo fuser -n tcp "$1" 2>/dev/null)"
+	if [ -z "$pids" ]; then
+		echo "Nothing is listening on port $1"
+		return 1
+	fi
+	# shellcheck disable=SC2086  # word splitting is intended: fuser returns a list
+	sudo kill -9 $pids
 }
 
-# Get all local ips
+# Local IPv4 addresses. Uses `ip`, which is always present, rather than
+# `ifconfig` from net-tools.
 local_ip() {
-	ifconfig | grep "inet" | grep -Fv 127.0.0.1 | awk '{print $2}'
+	ip -brief -family inet address show scope global | awk '{print $1": "$3}'
 }
 
-# Get public ip
 public_ip() {
-	curl ipinfo.io/ip
+	curl -s https://ipinfo.io/ip
+	echo
 }
 
-# udpate nvm version
-nvm-update() {
-	echo
-	echo "Updating Node Version $1"
-	echo
-	local current
-	local remote
-	current="$(nvm version "$1")"
-	if [ "$current" = "N/A" ]; then
-		echo "Version $1 Not Found!"
-		versions="$(nvm ls --no-alias --no-colors | xargs)"
-		versions=${versions//->/}
-		versions=${versions// v/v}
-		versions=${versions//\*/}
-		# ! Don't quote $versions here, it needs to be word-split
-		versions=($versions)
-		PS3="Select A Version To Use As $1: "
-		select current in "${versions[@]}"; do
-			if [ -n "$current" ]; then
-				break
-			fi
-		done
-		echo
-	fi
-
-	remote="$(nvm version-remote "$1")"
-	if [ "$remote" = "N/A" ]; then
-		echo "Version $1 Not Found On Remote"
-	elif [ "$current" = "$remote" ]; then
-		echo "Version $1 Is Up To Date"
-	else
-		echo "Updating $1 From $current To $remote"
-		nvm install "$1" --latest-npm --reinstall-packages-from="$current" &&
-			nvm uninstall "$current" &&
-			corepack enable yarn &&
-			corepack enable pnpm &&
-			corepack prepare yarn@stable --activate &&
-			corepack prepare pnpm@latest --activate &&
-			nvm use default
-	fi
-}
-
+# Recursively convert a directory of images to webp
 cwebpdir() {
-	if [ -z "$1" ]; then
+	if [ -z "${1:-}" ]; then
 		echo "Usage: cwebpdir <directory>"
-		return
+		return 1
 	fi
 
-	PARAMS=('-m 6 -q 70 -mt -af -progress')
-
+	local file
 	for file in "$1"/*; do
 		if [ -f "$file" ]; then
-			# shellcheck disable=SC2086,SC2128
-			cwebp $PARAMS "$file" -o "${file%.*}.webp"
-		fi
-		if [ -d "$file" ]; then
+			cwebp -m 6 -q 70 -mt -af -progress "$file" -o "${file%.*}.webp"
+		elif [ -d "$file" ]; then
 			cwebpdir "$file"
 		fi
 	done
 }
 
 mkv_to_mp4() {
-	ffmpeg -i "$1" -c:v copy -c:a aac -strict experimental -vcodec libx265 -crf 28 "${1%.*}.mp4"
+	ffmpeg -i "$1" -c:v libx265 -crf 28 -c:a aac "${1%.*}.mp4"
 }
 
 webm_to_mp4() {
-	ffmpeg -i "$1" -c:v libx264 -c:a aac -strict experimental "${1%.*}.mp4"
+	ffmpeg -i "$1" -c:v libx264 -c:a aac "${1%.*}.mp4"
 }
 
 ##############################################################################
-# 04. Setup Environments                                                     #
+# 04. Environment                                                            #
 ##############################################################################
 
+# path_prepend <dir> — add to PATH only if it exists and is not already there.
+path_prepend() {
+	[ -d "$1" ] || return 0
+	case ":$PATH:" in
+		*":$1:"*) ;;
+		*) PATH="$1:$PATH" ;;
+	esac
+}
+
+path_prepend "$HOME/.local/bin"
+path_prepend "$HOME/bin"
+
 # Bun
-export PATH="$HOME/.bun/bin:$PATH"
+export BUN_INSTALL="$HOME/.bun"
+path_prepend "$BUN_INSTALL/bin"
+
+# Deno
+export DENO_INSTALL="$HOME/.deno"
+path_prepend "$DENO_INSTALL/bin"
 
 # Turso
-export PATH="/home/muhammad/.turso:$PATH"
+path_prepend "$HOME/.turso"
 
-# FlyCTL
-export FLYCTL_INSTALL="/home/muhammad/.fly"
-export PATH="$FLYCTL_INSTALL/bin:$PATH"
-
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-
-# Set vivaldi as chrome executable
-export CHROME_EXECUTABLE="/usr/bin/vivaldi-stable"
-
-for f in ~/.config/bash-completion/completions/*; do
-	# shellcheck source=/dev/null
-	source "$f"
-done
-
-if [ -f "$HOME"/.bash.profile ]; then
-	# shellcheck source=/dev/null
-	. "$HOME"/.bash.profile
-fi
-
-eval "$(direnv hook bash)"
-
-export DENO_INSTALL="$HOME/.deno"
-export PATH="$DENO_INSTALL/bin:$PATH"
-
-export NVM_DIR="$HOME/.nvm"
-# shellcheck source=/dev/null
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# shellcheck source=/dev/null
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# android
-export ANDROID_HOME="$HOME/Android/Sdk"
-export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
-export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
-export GRADLE_HOME="/opt/gradle/gradle-8.0.2"
-export PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$GRADLE_HOME/bin"
-# android end
+# Fly.io
+export FLYCTL_INSTALL="$HOME/.fly"
+path_prepend "$FLYCTL_INSTALL/bin"
 
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
-export PATH="$PNPM_HOME:$PATH"
-# pnpm end
+path_prepend "$PNPM_HOME"
 
-# Overwrite cd to switch node version using nvm & .nvmrc
-cdnvm() {
-	command cd "$@" || return
-	nvm_path=$(nvm_find_up .nvmrc | tr -d '\n')
+export PATH
 
-	# If there are no .nvmrc file, use the default nvm version
-	if [[ ! $nvm_path = *[^[:space:]]* ]]; then
+# mise manages node, ruby, python, java and gradle. It replaces nvm and rbenv,
+# and picks up .nvmrc / .ruby-version / .tool-versions on cd, so the old
+# `alias cd='cdnvm'` override is no longer needed.
+if command -v mise >/dev/null; then
+	eval "$(mise activate bash)"
+fi
 
-		declare default_version
-		default_version=$(nvm version default)
+# JAVA_HOME follows mise when it manages java, otherwise the system JDK.
+if command -v mise >/dev/null && mise which java >/dev/null 2>&1; then
+	JAVA_HOME="$(dirname "$(dirname "$(mise which java)")")"
+	export JAVA_HOME
+elif [ -d /usr/lib/jvm/java-21-openjdk-amd64 ]; then
+	export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+fi
 
-		# If there is no default version, set it to `node`
-		# This will use the latest version on your machine
-		if [[ $default_version == "N/A" ]]; then
-			nvm alias default lts/*
-			default_version=$(nvm version default)
-		fi
+# Android SDK
+export ANDROID_HOME="$HOME/Android/Sdk"
+export ANDROID_SDK_ROOT="$ANDROID_HOME"
+path_prepend "$ANDROID_HOME/platform-tools"
+path_prepend "$ANDROID_HOME/tools"
+export PATH
 
-		# If the current version is not the default version, set it to use the default version
-		if [[ $(nvm current) != "$default_version" ]]; then
-			nvm use default
-		fi
-
-	elif [[ -s $nvm_path/.nvmrc && -r $nvm_path/.nvmrc ]]; then
-		declare nvm_version
-		nvm_version=$(<"$nvm_path"/.nvmrc)
-
-		declare locally_resolved_nvm_version
-		# `nvm ls` will check all locally-available versions
-		# If there are multiple matching versions, take the latest one
-		# Remove the `->` and `*` characters and spaces
-		# `locally_resolved_nvm_version` will be `N/A` if no local versions are found
-		locally_resolved_nvm_version=$(nvm ls --no-colors "$nvm_version" | tail -1 | tr -d '\->*' | tr -d '[:space:]')
-
-		# If it is not already installed, install it
-		# `nvm install` will implicitly use the newly-installed version
-		if [[ "$locally_resolved_nvm_version" == "N/A" ]]; then
-			nvm install "$nvm_version"
-		elif [[ $(nvm current) != "$locally_resolved_nvm_version" ]]; then
-			nvm use "$nvm_version"
-		fi
+# Flutter's web target needs a Chromium-family browser; set it only if one is
+# actually installed rather than hardcoding a path.
+for browser in google-chrome chromium brave-browser vivaldi-stable; do
+	if command -v "$browser" >/dev/null; then
+		CHROME_EXECUTABLE="$(command -v "$browser")"
+		export CHROME_EXECUTABLE
+		break
 	fi
-}
-alias cd='cdnvm'
-cd "$PWD" || exit
+done
+unset browser
 
+# Completions. bash-completion pulls in ~/.config/bash-completion/completions
+# lazily, but sourcing these explicitly keeps the ones generated by
+# scripts/install-completions.sh working for aliases too.
+if [ -f /usr/share/bash-completion/bash_completion ]; then
+	# shellcheck source=/dev/null
+	. /usr/share/bash-completion/bash_completion
+fi
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH=$BUN_INSTALL/bin:$PATH
+shopt -s nullglob
+for completion in "$HOME"/.config/bash-completion/completions/*; do
+	# shellcheck source=/dev/null
+	[ -r "$completion" ] && . "$completion"
+done
+shopt -u nullglob
+unset completion
 
-# Setup autocorrect alias `fuck`
-if command -v thefuck &>/dev/null; then
-	eval "$(thefuck --alias)"
+command -v direnv >/dev/null && eval "$(direnv hook bash)"
+command -v zoxide >/dev/null && eval "$(zoxide init bash)"
+
+# Machine-specific settings that should not be committed.
+if [ -f "$HOME/.bash.profile" ]; then
+	# shellcheck source=/dev/null
+	. "$HOME/.bash.profile"
 fi

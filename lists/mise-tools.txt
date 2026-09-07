@@ -1,0 +1,9 @@
+# Runtimes managed by mise (https://mise.jdx.dev), installed globally.
+# `mise use -g <tool>@<version>` is run for each line.
+# Per-project versions still come from .mise.toml / .tool-versions / .nvmrc.
+
+node@lts
+ruby@3.4
+python@3.13
+java@temurin-21
+gradle@latest
