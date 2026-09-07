@@ -23,3 +23,8 @@
   insteadOf = https://github.com/
 [gpg]
   format = ssh
+[gpg "ssh"]
+  # Without this, `git log --show-signature` and `git verify-commit` fail with
+  # "needs to be configured and exist" for every commit, even correctly signed
+  # ones. scripts/generate-ssh-key.sh generates the file.
+  allowedSignersFile = ~/.ssh/allowed_signers
