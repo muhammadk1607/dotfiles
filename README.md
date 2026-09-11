@@ -30,6 +30,8 @@ Every step is idempotent, so re-run `./install.sh` any time to pick up changes.
 | `mise`        | node, ruby, python, java and gradle, plus global npm packages and gems         |
 | `docker`      | Docker CE with the buildx and compose plugins                                  |
 | `vscode`      | VS Code and every extension in `lists/vscode-extensions.txt`                   |
+| `claude`      | Claude Code CLI, Claude Desktop, and the mattpocock-skills plugin              |
+| `antigravity` | Antigravity IDE, with mattpocock's skills mirrored in as Antigravity skills    |
 | `flatpak`     | COSMIC applets and GUI apps, from Flathub and Pop's `cosmic` remote            |
 | `apps`        | Slack, AnyDesk, RustDesk, fastfetch, onefetch, Bun and Deno                    |
 | `fonts`       | Iosevka Slab and Term Slab                                                     |

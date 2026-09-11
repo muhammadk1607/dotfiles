@@ -118,6 +118,10 @@ alias pbpaste="wl-paste"
 
 alias dc="docker compose"
 
+# Work Claude Code account, kept in its own config dir so it logs in and
+# stores history separately from the default (personal) `claude`.
+alias claude-work='CLAUDE_CONFIG_DIR="$HOME/.claude-work" claude'
+
 ##############################################################################
 # 03. Functions                                                              #
 ##############################################################################

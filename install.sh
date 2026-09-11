@@ -23,6 +23,8 @@ STEPS=(
 	"mise:install-mise.sh"
 	"docker:install-docker.sh"
 	"vscode:install-vscode.sh"
+	"claude:install-claude.sh"
+	"antigravity:install-antigravity.sh"
 	"flatpak:install-flatpak.sh"
 	"apps:install-apps.sh"
 	"fonts:install-fonts.sh"
