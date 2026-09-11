@@ -2,8 +2,10 @@ Some(([
     "io.github.crocodile.cosmic-ext-applet-workspace-icons",
     "dev.DBrox.CosmicPrivacyIndicator",
     "io.github.cosmic_utils.minimon-applet",
-    "io.github.nalladev.CosmicExtAppletEyedropper",
+    "io.github.TopiCsarno.YapCap",
 ], [
+    "io.github.cosmic_utils.sysinfo-applet",
+    "io.github.nalladev.CosmicExtAppletEyedropper",
     "io.github.k33wee.clippy-land",
     "com.system76.CosmicAppletInputSources",
     "com.system76.CosmicAppletStatusArea",
