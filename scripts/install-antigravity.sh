@@ -10,9 +10,23 @@ if have antigravity; then
 else
 	add_apt_repo "antigravity" \
 		"https://us-central1-apt.pkg.dev/doc/repo-signing-key.gpg" \
-		"deb [signed-by=/etc/apt/keyrings/antigravity-repo-key.gpg] https://us-central1-apt.pkg.dev/projects/antigravity-auto-updater-dev/ antigravity-debian main"
+		"deb [signed-by=/etc/apt/keyrings/antigravity.gpg] https://us-central1-apt.pkg.dev/projects/antigravity-auto-updater-dev/ antigravity-debian main"
 	apt_install antigravity
 fi
+
+step "Installing Antigravity CLI"
+
+if have agy; then
+	skip "agy"
+else
+	# No apt package for the CLI; Google only ships this installer, which
+	# drops the binary in ~/.local/bin.
+	curl -fsSL https://antigravity.google/cli/install.sh | bash
+fi
+
+# The installer puts the binary under ~/.local/bin, which isn't on PATH yet
+# in this non-interactive script (only .bashrc adds it, for login shells).
+export PATH="$HOME/.local/bin:$PATH"
 
 step "Installing mattpocock skills for Antigravity"
 
