@@ -27,7 +27,7 @@ Every step is idempotent, so re-run `./install.sh` any time to pick up changes.
 | `apt`         | Packages from `lists/apt-packages.txt`, plus pipx tools                        |
 | `gh`          | GitHub CLI from GitHub's own apt repo                                          |
 | `ssh`         | Generates `~/.ssh/id-github` and registers it with GitHub for auth and signing |
-| `mise`        | node, ruby, python, java and gradle, plus global npm packages and gems         |
+| `mise`        | node, ruby, python, java, gradle and the Supabase CLI, plus npm globals, gems  |
 | `docker`      | Docker CE with the buildx and compose plugins                                  |
 | `vscode`      | VS Code and every extension in `lists/vscode-extensions.txt`                   |
 | `claude`      | Claude Code CLI, Claude Desktop, and the mattpocock-skills plugin              |

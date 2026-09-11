@@ -7,3 +7,7 @@ ruby@3.4
 python@3.13
 java@temurin-21
 gradle@latest
+
+# CLIs shipped as prebuilt binaries through mise's aqua backend, so they
+# upgrade alongside the runtimes. Supabase doesn't support `npm install -g`.
+supabase@latest

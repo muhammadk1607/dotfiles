@@ -50,6 +50,7 @@ generate mise mise completion bash
 generate docker docker completion bash
 generate bun bun completions bash
 generate rustup rustup completions bash
+generate supabase supabase completion bash
 
 # Note: docker-compose is a `docker` subcommand now, so its completions come
 # with the docker completion above rather than as a separate file.
