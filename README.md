@@ -33,7 +33,7 @@ Every step is idempotent, so re-run `./install.sh` any time to pick up changes.
 | `claude`      | Claude Code CLI, Claude Desktop, and the mattpocock-skills plugin              |
 | `antigravity` | Antigravity IDE, with mattpocock's skills mirrored in as Antigravity skills    |
 | `flatpak`     | COSMIC applets and GUI apps, from Flathub and Pop's `cosmic` remote            |
-| `apps`        | Slack, AnyDesk, RustDesk, fastfetch, onefetch, Bun and Deno                    |
+| `apps`        | Slack, Zoom, AnyDesk, RustDesk, fastfetch, onefetch, Bun and Deno              |
 | `fonts`       | Iosevka Slab and Term Slab                                                     |
 | `completions` | Bash completions into `~/.config/bash-completion/completions`                  |
 | `assets`      | Wallpapers into `~/Pictures/wallpapers`                                        |

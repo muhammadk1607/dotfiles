@@ -22,6 +22,15 @@ else
 	fi
 fi
 
+## Zoom — no apt repo; the unversioned "latest" URL redirects to the current .deb.
+if have zoom; then
+	skip "zoom"
+else
+	info "Installing Zoom"
+	install_deb_from_url "https://zoom.us/client/latest/zoom_amd64.deb" ||
+		warn "Zoom install failed"
+fi
+
 ## fastfetch — replaces neofetch, which was archived upstream in 2024.
 ## Not in the 24.04 archive (it lands in 24.10), so take the upstream .deb.
 if have fastfetch; then
