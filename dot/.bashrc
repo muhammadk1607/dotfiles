@@ -118,6 +118,11 @@ alias pbpaste="wl-paste"
 
 alias dc="docker compose"
 
+# Antigravity CLI ships as `agy`; the `antigravity` name belongs to the IDE.
+# Auto-approving tool calls is the point of running it here, so bake the flag in
+# — `command agy` still gets the prompting default.
+alias ag='agy --dangerously-skip-permissions'
+
 # Work Claude Code account, kept in its own config dir so it logs in and
 # stores history separately from the default (personal) `claude`.
 alias claude-work='CLAUDE_CONFIG_DIR="$HOME/.claude-work" claude'
