@@ -115,6 +115,7 @@ alias cat="bat --plain --paging=never"
 # Wayland clipboard
 alias pbcopy="wl-copy"
 alias pbpaste="wl-paste"
+alias copy="wl-copy <"
 
 alias dc="docker compose"
 
