@@ -85,6 +85,73 @@ else
 	fi
 fi
 
+## install_portable_app <user/repo> <binary-name> — install a release tarball
+## into ~/.local. The tarball's *-portable.txt marker must sit beside the binary,
+## or the in-app updater refuses to run; the .deb and .flatpak releases have no
+## update source at all.
+install_portable_app() {
+	local repo="$1" name="$2"
+	local bin="$HOME/.local/bin/$name"
+	local tag tmp
+	tag="$(latest_git_release "$repo")" || return 1
+
+	local archive="${name}-${tag}-x86_64-unknown-linux-gnu"
+	local url="https://github.com/${repo}/releases/download/${tag}"
+	tmp="$(mktemp -d)"
+	# shellcheck disable=SC2064  # expand $tmp now, not at trap time
+	trap "rm -rf '$tmp'" RETURN
+	curl -fsSL "${url}/${archive}.tar.gz" -o "${tmp}/${archive}.tar.gz" || { err "Download failed: ${archive}.tar.gz"; return 1; }
+	curl -fsSL "${url}/checksums.txt" -o "${tmp}/checksums.txt" || { err "Download failed: checksums.txt"; return 1; }
+	(cd "$tmp" && grep " ${archive}.tar.gz\$" checksums.txt | sha256sum -c --quiet -) || { err "Checksum failed: ${archive}.tar.gz"; return 1; }
+	tar xzf "${tmp}/${archive}.tar.gz" -C "$tmp" || return 1
+
+	local src="${tmp}/${archive}"
+	install -Dm755 "${src}/${name}" "$bin"
+	install -Dm644 "${src}/${name}-portable.txt" "${bin}-portable.txt"
+	install -Dm644 "${src}/packaging/icons/${name}.svg" "$HOME/.local/share/icons/hicolor/scalable/apps/${name}.svg"
+	# The launcher may not have ~/.local/bin on its PATH, so use the full path.
+	mkdir -p "$HOME/.local/share/applications"
+	sed -E "s|^Exec=${name}( \|\$)|Exec=\"${bin}\"\1|" "${src}/packaging/applications/${name}.desktop" >"$HOME/.local/share/applications/${name}.desktop"
+	update-desktop-database "$HOME/.local/share/applications" &>/dev/null || true
+}
+
+## install_dracula_theme <binary-name> — add the palette from config/, and select
+## it only on a machine with no settings yet, so a later choice in the app sticks.
+## The apps ignore symlinked palettes, so this has to be a copy.
+install_dracula_theme() {
+	local name="$1"
+	local dir="$HOME/.config/$name"
+	install -d -m 700 "$dir" "$dir/themes"
+	install -m 644 "$DOTFILES_ROOT/config/$name/themes/Dracula.json" "$dir/themes/Dracula.json"
+	if [ ! -e "$dir/settings.json" ]; then
+		echo '{ "custom_theme": "Dracula.json" }' >"$dir/settings.json"
+		info "Selected the Dracula theme for $name"
+	fi
+}
+
+## Spotifast
+if [ -x "$HOME/.local/bin/spotifast" ]; then
+	skip "spotifast"
+else
+	info "Installing Spotifast"
+	# Open spotify: links here.
+	if install_portable_app "crmne/spotifast" "spotifast"; then
+		xdg-mime default spotifast.desktop x-scheme-handler/spotify
+	else
+		warn "Spotifast install failed"
+	fi
+fi
+install_dracula_theme "spotifast"
+
+## ZapFast
+if [ -x "$HOME/.local/bin/zapfast" ]; then
+	skip "zapfast"
+else
+	info "Installing ZapFast"
+	install_portable_app "crmne/zapfast" "zapfast" || warn "ZapFast install failed"
+fi
+install_dracula_theme "zapfast"
+
 ## Bun and Deno both append PATH lines to ~/.bashrc. That file is a symlink into
 ## this repo, and section 04 of .bashrc already puts both on PATH, so an append
 ## only duplicates those lines and hardcodes an absolute home directory into a
