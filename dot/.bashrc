@@ -142,6 +142,7 @@ update() {
 	if command -v flatpak >/dev/null; then
 		echo "› flatpak"
 		flatpak update -y
+		flatpak uninstall --unused -y
 	fi
 
 	if command -v mise >/dev/null; then

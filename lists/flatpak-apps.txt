@@ -18,7 +18,6 @@ io.github.nalladev.CosmicExtAppletEyedropper            cosmic
 ## Applications
 com.bitwarden.desktop
 com.obsproject.Studio
-com.spotify.Client
 org.gimp.GIMP
 org.kde.krita
 org.videolan.VLC
