@@ -164,6 +164,11 @@ update() {
 	command -v tldr >/dev/null && { echo "› tldr"; tldr --update; }
 }
 
+# Mirror ~/.ssh into Bitwarden (restored by `./install.sh ssh-restore`).
+ssh-backup() {
+	"$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../scripts/backup-ssh.sh" "$@"
+}
+
 # Make a directory and move into it
 mkcdir() {
 	mkdir -p -- "$1" && cd -P -- "$1" || return

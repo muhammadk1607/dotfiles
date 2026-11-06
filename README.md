@@ -6,7 +6,7 @@ Personal setup for **Pop!\_OS 24.04 LTS** running the **COSMIC** desktop.
 
 ```bash
 cd ~
-git clone git@github.com:MBM1607/dotfiles.git
+git clone https://github.com/muhammadk1607/dotfiles.git
 cd dotfiles
 ./install.sh
 ```
@@ -25,6 +25,7 @@ Every step is idempotent, so re-run `./install.sh` any time to pick up changes.
 | ------------- | ------------------------------------------------------------------------------ |
 | `dotfiles`    | Symlinks `dot/` into `~`, backing up anything already there                    |
 | `apt`         | Packages from `lists/apt-packages.txt`, plus pipx tools                        |
+| `ssh-restore` | Restores `~/.ssh` from your Bitwarden vault (see [SSH keys](#ssh-keys))        |
 | `gh`          | GitHub CLI from GitHub's own apt repo                                          |
 | `ssh`         | Generates `~/.ssh/id-github` and registers it with GitHub for auth and signing |
 | `mise`        | node, ruby, python, java, gradle and the Supabase CLI, plus npm globals, gems  |
@@ -63,8 +64,31 @@ Snapshot live state back into the repo, then commit the diff:
 ./scripts/export-cosmic-config.sh       # → config/cosmic/
 ```
 
+After adding a key or editing `~/.ssh/config`, run `ssh-backup` (see
+[SSH keys](#ssh-keys)).
+
 `update` (a function in `.bashrc`) upgrades everything in place: apt, flatpak,
 mise runtimes, global npm packages, deno, bun, pipx and gh extensions.
+
+## SSH keys
+
+`~/.ssh` is backed up to Bitwarden, never to this (public) repo.
+
+- **Back up:** `ssh-backup` (or `scripts/backup-ssh.sh`). Each file becomes a
+  Secure Note in a vault folder named `SSH`; files over 6 000 characters
+  (`known_hosts`) are split into `name [1/n]` chunks. Only changed files are
+  written, and anything deleted locally is offered to the Bitwarden trash.
+- **Restore:** happens early in `./install.sh`, or on its own with
+  `./install.sh ssh-restore`. It asks for your Bitwarden login (master password
+  + 2FA), writes the files with `0600`/`0644` permissions and locks the vault
+  again. Existing files are never overwritten unless you pass `--force` to
+  `scripts/restore-ssh.sh`, which keeps the local copy as `*.backup.<date>`.
+- Secrets move only through pipes, never argv or temp files. Vault item names
+  are validated, so nothing can be written outside `~/.ssh`.
+- Skipped: dotfiles, `known_hosts.old`, `allowed_signers` (the `ssh` step
+  regenerates it) and subdirectories.
+- EU or self-hosted vault: `BW_SERVER=https://vault.bitwarden.eu ./install.sh`.
+  Different folder name: `BW_SSH_FOLDER=...`.
 
 ## Notes
 

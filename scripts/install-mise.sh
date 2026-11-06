@@ -11,10 +11,7 @@ step "Setting up mise"
 if have mise; then
 	skip "mise"
 else
-	add_apt_repo "mise" \
-		"https://mise.jdx.dev/gpg-key.pub" \
-		"deb [signed-by=/etc/apt/keyrings/mise.gpg arch=$(dpkg --print-architecture)] https://mise.jdx.dev/deb stable main"
-	apt_install mise
+	ensure_mise
 fi
 
 # Activate for this script only; .bashrc handles interactive shells.

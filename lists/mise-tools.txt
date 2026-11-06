@@ -11,3 +11,5 @@ gradle@latest
 # CLIs shipped as prebuilt binaries through mise's aqua backend, so they
 # upgrade alongside the runtimes. Supabase doesn't support `npm install -g`.
 supabase@latest
+# Bitwarden CLI (`bw`) — backs up and restores ~/.ssh. See scripts/backup-ssh.sh.
+bitwarden@latest

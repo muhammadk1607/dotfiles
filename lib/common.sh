@@ -121,6 +121,16 @@ latest_git_release() {
 	echo "$tag"
 }
 
+# ensure_mise — install mise from its apt repo if it is missing. Shared by the
+# mise step and by anything earlier in the run that needs a mise-managed CLI.
+ensure_mise() {
+	have mise && return 0
+	add_apt_repo "mise" \
+		"https://mise.jdx.dev/gpg-key.pub" \
+		"deb [signed-by=/etc/apt/keyrings/mise.gpg arch=$(dpkg --print-architecture)] https://mise.jdx.dev/deb stable main"
+	apt_install mise
+}
+
 # read_list <file> — emit list entries, ignoring blank lines and # comments.
 read_list() {
 	sed -e 's/#.*//' -e 's/[[:space:]]*$//' -e '/^$/d' "$1"

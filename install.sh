@@ -18,6 +18,7 @@ source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/common.sh"
 STEPS=(
 	"dotfiles:link-dotfiles.sh"
 	"apt:install-apt.sh"
+	"ssh-restore:restore-ssh.sh"
 	"gh:install-gh.sh"
 	"ssh:generate-ssh-key.sh"
 	"mise:install-mise.sh"
