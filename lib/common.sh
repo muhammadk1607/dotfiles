@@ -121,6 +121,51 @@ latest_git_release() {
 	echo "$tag"
 }
 
+# parse_update_flag "$@" — for scripts that can either install or update.
+# With no argument (./install.sh) they install what's missing and update what's
+# there. With --update (the `update` shell function) they only refresh what is
+# already installed, so `update` never pulls in something you chose to skip.
+parse_update_flag() {
+	UPDATE_ONLY=false
+	case "${1:-}" in
+		"") ;;
+		--update) UPDATE_ONLY=true ;;
+		*) die "Unknown option: $1 (the only option is --update)" ;;
+	esac
+}
+
+# deb_version <package> — the installed version, or nothing if not installed.
+deb_version() {
+	{ dpkg-query -W -f='${db:Status-Status} ${Version}' "$1" 2>/dev/null || true; } | sed -n 's/^installed //p'
+}
+
+# install_github_deb <package> <user/repo> <asset>
+# Install or update an app published as a .deb on GitHub releases. Such apps add
+# no apt source, so `apt full-upgrade` never sees a newer version.
+# In <asset>, {version} is the release tag without a leading v, {tag} the tag.
+# Honours UPDATE_ONLY (see parse_update_flag).
+install_github_deb() {
+	local package="$1" repo="$2" asset="$3"
+	local installed tag version
+	installed="$(deb_version "$package")"
+	if [ -z "$installed" ] && [ "${UPDATE_ONLY:-false}" = true ]; then
+		return 0
+	fi
+
+	tag="$(latest_git_release "$repo")" || return 1
+	version="${tag#v}"
+	# Some packages add a Debian revision (onefetch is 2.28.1-1); tags never do.
+	if [ "$installed" = "$version" ] || [ "${installed%-*}" = "$version" ]; then
+		info "$package $installed is up to date"
+		return 0
+	fi
+
+	asset="${asset//\{version\}/$version}"
+	asset="${asset//\{tag\}/$tag}"
+	info "Installing $package $version${installed:+ (replacing $installed)}"
+	install_deb_from_url "https://github.com/${repo}/releases/download/${tag}/${asset}"
+}
+
 # ensure_mise — install mise from its apt repo if it is missing. Shared by the
 # mise step and by anything earlier in the run that needs a mise-managed CLI.
 ensure_mise() {

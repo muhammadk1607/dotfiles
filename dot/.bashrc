@@ -132,7 +132,14 @@ alias claude-work='CLAUDE_CONFIG_DIR="$HOME/.claude-work" claude'
 # 03. Functions                                                              #
 ##############################################################################
 
-# Update everything this machine installs.
+# The repo this file lives in. ~/.bashrc is a symlink into it; fall back to
+# ~/dotfiles if something replaced the link with a copy.
+DOTFILES="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." && pwd)"
+[ -d "$DOTFILES/scripts" ] || DOTFILES="$HOME/dotfiles"
+
+# Update everything this machine installs. The install scripts called with
+# --update only touch what is already installed, so this is safe on a machine
+# that skipped some steps.
 update() {
 	echo "› apt"
 	sudo apt update &&
@@ -145,11 +152,18 @@ update() {
 		flatpak uninstall --unused -y
 	fi
 
+	# No apt source for these, so apt never updates them.
+	echo "› apps outside apt"
+	"$DOTFILES/scripts/install-github-debs.sh" --update # RustDesk, fastfetch, onefetch, rclone
+	"$DOTFILES/scripts/install-zoom.sh" --update
+
 	if command -v mise >/dev/null; then
 		echo "› mise"
 		mise --yes self-update 2>/dev/null || true
 		mise upgrade --bump
 		mise --yes prune
+		# A new node version starts with no globals.
+		"$DOTFILES/scripts/install-npm-globals.sh"
 	fi
 
 	if command -v npm >/dev/null; then
@@ -157,16 +171,24 @@ update() {
 		npm-check -gu
 	fi
 
+	command -v pnpm >/dev/null && { echo "› pnpm globals"; pnpm update -g --latest; }
 	command -v deno >/dev/null && { echo "› deno"; deno upgrade; }
 	command -v bun >/dev/null && { echo "› bun"; bun upgrade; }
 	command -v pipx >/dev/null && { echo "› pipx"; pipx upgrade-all; }
 	command -v gh >/dev/null && { echo "› gh extensions"; gh extension upgrade --all; }
 	command -v tldr >/dev/null && { echo "› tldr"; tldr --update; }
+
+	"$DOTFILES/scripts/install-fonts.sh" --update
+	"$DOTFILES/scripts/install-antigravity.sh" --update
+	"$DOTFILES/scripts/install-android-sdk.sh" --update
+	"$DOTFILES/scripts/install-watchman.sh" --update
+	"$DOTFILES/scripts/install-scrcpy.sh" --update
+	"$DOTFILES/scripts/install-portainer.sh" --update
 }
 
 # Mirror ~/.ssh into Bitwarden (restored by `./install.sh ssh-restore`).
 ssh-backup() {
-	"$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../scripts/backup-ssh.sh" "$@"
+	"$DOTFILES/scripts/backup-ssh.sh" "$@"
 }
 
 # Make a directory and move into it
@@ -223,6 +245,20 @@ webm_to_mp4() {
 	ffmpeg -i "$1" -c:v libx264 -c:a aac "${1%.*}.mp4"
 }
 
+# Connect to a RustDesk peer by the alias you gave it in RustDesk.
+# Tab completion for the aliases is in completions/rdp-completion.sh.
+rdp() {
+	[ -n "${1:-}" ] || { echo "Usage: rdp <alias>"; return 1; }
+	local peer_file
+	peer_file="$(grep -rlF "alias = '$1'" "$HOME/.config/rustdesk/peers" 2>/dev/null | head -1)"
+	if [ -z "$peer_file" ]; then
+		echo "No RustDesk peer has the alias: $1"
+		return 1
+	fi
+	rustdesk --connect "$(basename "$peer_file" .toml)" >/dev/null 2>&1 &
+	disown
+}
+
 ##############################################################################
 # 04. Environment                                                            #
 ##############################################################################
@@ -254,9 +290,11 @@ path_prepend "$HOME/.turso"
 export FLYCTL_INSTALL="$HOME/.fly"
 path_prepend "$FLYCTL_INSTALL/bin"
 
-# pnpm
+# pnpm itself comes from mise. PNPM_HOME is where `pnpm add -g` puts packages,
+# and pnpm 11+ puts their commands in its bin/ subfolder.
 export PNPM_HOME="$HOME/.local/share/pnpm"
 path_prepend "$PNPM_HOME"
+path_prepend "$PNPM_HOME/bin"
 
 export PATH
 
@@ -278,8 +316,9 @@ fi
 # Android SDK
 export ANDROID_HOME="$HOME/Android/Sdk"
 export ANDROID_SDK_ROOT="$ANDROID_HOME"
+path_prepend "$ANDROID_HOME/emulator"
 path_prepend "$ANDROID_HOME/platform-tools"
-path_prepend "$ANDROID_HOME/tools"
+path_prepend "$ANDROID_HOME/cmdline-tools/latest/bin"
 export PATH
 
 # Flutter's web target needs a Chromium-family browser; set it only if one is

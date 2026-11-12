@@ -3,30 +3,46 @@ set -euo pipefail
 # shellcheck source=SCRIPTDIR/../lib/common.sh
 source "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
 
-step "Setting up Antigravity"
+# Install the Antigravity IDE and CLI, and mirror mattpocock's skills into them.
+#
+#   scripts/install-antigravity.sh            install everything, refresh skills
+#   scripts/install-antigravity.sh --update   only refresh skills already mirrored
+#
+# The IDE updates through its apt repo, so --update leaves it to apt.
 
-if have antigravity; then
-	skip "antigravity"
-else
-	add_apt_repo "antigravity" \
-		"https://us-central1-apt.pkg.dev/doc/repo-signing-key.gpg" \
-		"deb [signed-by=/etc/apt/keyrings/antigravity.gpg] https://us-central1-apt.pkg.dev/projects/antigravity-auto-updater-dev/ antigravity-debian main"
-	apt_install antigravity
-fi
+parse_update_flag "$@"
 
-step "Installing Antigravity CLI"
+skills_repo="$HOME/.cache/mattpocock-skills"
+[ "$UPDATE_ONLY" = true ] && [ ! -d "$skills_repo/.git" ] && exit 0
 
-if have agy; then
-	skip "agy"
-else
-	# No apt package for the CLI; Google only ships this installer, which
-	# drops the binary in ~/.local/bin.
-	curl -fsSL https://antigravity.google/cli/install.sh | bash
-fi
+install_apps() {
+	step "Setting up Antigravity"
 
-# The installer puts the binary under ~/.local/bin, which isn't on PATH yet
-# in this non-interactive script (only .bashrc adds it, for login shells).
-export PATH="$HOME/.local/bin:$PATH"
+	if have antigravity; then
+		skip "antigravity"
+	else
+		add_apt_repo "antigravity" \
+			"https://us-central1-apt.pkg.dev/doc/repo-signing-key.gpg" \
+			"deb [signed-by=/etc/apt/keyrings/antigravity.gpg] https://us-central1-apt.pkg.dev/projects/antigravity-auto-updater-dev/ antigravity-debian main"
+		apt_install antigravity
+	fi
+
+	step "Installing Antigravity CLI"
+
+	if have agy; then
+		skip "agy"
+	else
+		# No apt package for the CLI; Google only ships this installer, which
+		# drops the binary in ~/.local/bin.
+		curl -fsSL https://antigravity.google/cli/install.sh | bash
+	fi
+
+	# The installer puts the binary under ~/.local/bin, which isn't on PATH yet
+	# in this non-interactive script (only .bashrc adds it, for login shells).
+	export PATH="$HOME/.local/bin:$PATH"
+}
+
+[ "$UPDATE_ONLY" = true ] || install_apps
 
 step "Installing mattpocock skills for Antigravity"
 
@@ -38,7 +54,6 @@ step "Installing mattpocock skills for Antigravity"
 # ~/.gemini/config/skills is the one global skills directory every Antigravity
 # flavour (IDE, CLI, and the standalone app) reads, unlike ~/.gemini/skills or
 # ~/.gemini/antigravity/skills which only some of them pick up.
-skills_repo="$HOME/.cache/mattpocock-skills"
 if [ -d "$skills_repo/.git" ]; then
 	info "Updating mattpocock/skills"
 	git -C "$skills_repo" pull --ff-only -q
@@ -54,4 +69,12 @@ for bucket in engineering productivity; do
 		[ -d "$skill_dir" ] || continue
 		ln -sfn "$skill_dir" "$target/$(basename "$skill_dir")"
 	done
+done
+
+# Drop links to skills that upstream has since removed or renamed.
+for link in "$target"/*; do
+	if [ -L "$link" ] && [ ! -e "$link" ] && [[ "$(readlink "$link")" == "$skills_repo"/* ]]; then
+		info "Removing $(basename "$link"), which upstream removed"
+		rm "$link"
+	fi
 done

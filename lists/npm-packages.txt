@@ -1,4 +1,9 @@
 # Global npm packages, installed against the mise-managed default node.
+# Each node version has its own globals, so scripts/install-npm-globals.sh
+# reinstalls this list whenever `update` moves node to a new version.
+#
+# pnpm isn't here: it comes from mise (lists/mise-tools.txt), so it doesn't
+# depend on which node is active.
 
 ## Language tooling
 typescript
@@ -29,5 +34,8 @@ sharp-cli
 tinypng-cli
 
 ## Misc
+# Node 25+ no longer bundles corepack. It's still how projects pin their yarn
+# version (the packageManager field), so install it and enable it for yarn only.
+corepack
 tldr
 @vscode/vsce
