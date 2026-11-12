@@ -11,5 +11,9 @@ gradle@latest
 # CLIs shipped as prebuilt binaries through mise's aqua backend, so they
 # upgrade alongside the runtimes. Supabase doesn't support `npm install -g`.
 supabase@latest
+# pnpm as a standalone binary rather than through node. Node 25+ no longer
+# bundles corepack, and anything tied to one node version disappears when
+# `update` moves node to a new major, which is how pnpm went missing on node 26.
+pnpm@latest
 # Bitwarden CLI (`bw`) — backs up and restores ~/.ssh. See scripts/backup-ssh.sh.
 bitwarden@latest

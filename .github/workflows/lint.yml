@@ -1,0 +1,22 @@
+name: Lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  shell:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Syntax check
+        run: |
+          git ls-files '*.sh' dot/.bashrc | xargs -n1 bash -n
+
+      - name: ShellCheck
+        # ubuntu-24.04 runners ship shellcheck; .shellcheckrc sets the options.
+        run: |
+          shellcheck --version
+          git ls-files '*.sh' dot/.bashrc | xargs shellcheck

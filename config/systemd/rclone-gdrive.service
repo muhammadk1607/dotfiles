@@ -1,0 +1,16 @@
+# Installed by scripts/setup-gdrive.sh into ~/.config/systemd/user/
+[Unit]
+Description=Google Drive mount (rclone)
+
+[Service]
+Type=notify
+ExecStartPre=/usr/bin/mkdir -p %h/GoogleDrive
+ExecStart=/usr/bin/rclone mount gdrive: %h/GoogleDrive --vfs-cache-mode full
+# Clear a stale mount if rclone crashed, or the next start fails.
+ExecStopPost=-/usr/bin/fusermount3 -uz %h/GoogleDrive
+# Also covers logging in before the network is up.
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target

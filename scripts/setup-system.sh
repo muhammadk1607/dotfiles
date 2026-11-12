@@ -30,6 +30,15 @@ CONF
 sudo sysctl --system >/dev/null
 info "inotify limits raised (${sysctl_file})"
 
+## Serial ports (/dev/ttyUSB*, /dev/ttyACM*) belong to the dialout group, so
+## flashing or talking to a microcontroller otherwise needs sudo.
+if id -nG "$USER" | grep -qw dialout; then
+	skip "dialout group"
+else
+	sudo usermod -aG dialout "$USER"
+	info "Added $USER to the dialout group (takes effect at next login)"
+fi
+
 if have cosmic-term; then
 	sudo update-alternatives --install /usr/bin/x-terminal-emulator \
 		x-terminal-emulator /usr/bin/cosmic-term 60 >/dev/null 2>&1 || true
