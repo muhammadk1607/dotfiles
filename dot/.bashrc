@@ -296,6 +296,9 @@ export PNPM_HOME="$HOME/.local/share/pnpm"
 path_prepend "$PNPM_HOME"
 path_prepend "$PNPM_HOME/bin"
 
+# go itself comes from mise. `go install` puts commands in ~/go/bin.
+path_prepend "$HOME/go/bin"
+
 export PATH
 
 # mise manages node, ruby, python, java and gradle. It replaces nvm and rbenv,
