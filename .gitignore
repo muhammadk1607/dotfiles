@@ -1,0 +1,7 @@
+# Never commit a WhatsApp session or message history. The bridge keeps them in
+# whatsapp-bridge/store/ outside this repo, but guard against a copy landing here.
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+whatsapp-bridge/store/

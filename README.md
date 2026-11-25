@@ -28,11 +28,12 @@ Every step is idempotent, so re-run `./install.sh` any time to pick up changes.
 | `ssh-restore` | Restores `~/.ssh` from your Bitwarden vault (see [SSH keys](#ssh-keys))        |
 | `gh`          | GitHub CLI from GitHub's own apt repo                                          |
 | `ssh`         | Generates `~/.ssh/id-github` and registers it with GitHub for auth and signing |
-| `mise`        | node, ruby, python, java, gradle, pnpm and the Supabase CLI, plus npm globals, gems |
+| `mise`        | node, ruby, python, java, gradle, go, pnpm and the Supabase CLI, plus npm globals, gems |
 | `docker`      | Docker CE with the buildx and compose plugins                                  |
 | `portainer`   | Portainer, a web UI for Docker, at https://localhost:9443                      |
 | `vscode`      | VS Code and every extension in `lists/vscode-extensions.txt`                   |
 | `claude`      | Claude Code CLI, Claude Desktop, and the mattpocock-skills plugin              |
+| `whatsapp`    | WhatsApp MCP server for both Claude Code accounts (see [WhatsApp MCP](#whatsapp-mcp)) |
 | `antigravity` | Antigravity IDE, with mattpocock's skills mirrored in as Antigravity skills    |
 | `flatpak`     | COSMIC applets and GUI apps, from Flathub and Pop's `cosmic` remote            |
 | `apps`        | Slack, Zoom, AnyDesk, RustDesk, rclone, Spotifast, ZapFast, fastfetch, onefetch, Bun and Deno |
@@ -115,6 +116,44 @@ into rclone's config, never onto a command line.
 - `GDRIVE_SCOPE=drive` for full Drive access. The default, `drive.file`, only
   sees files rclone created.
 - `GDRIVE_CLIENT_ITEM=...` to read the client from a different item.
+
+## WhatsApp MCP
+
+`./install.sh whatsapp` sets up [whatsapp-mcp](https://github.com/lharries/whatsapp-mcp)
+in `~/workspace/whatsapp-mcp` (override with `WHATSAPP_MCP_DIR`). It clones or
+pulls the repo, applies `config/whatsapp-mcp/bridge.patch`, builds the Go
+bridge and registers the `whatsapp` MCP server at user scope for both `claude`
+and `claude-work`. It needs go (from the `mise` step), uv and git, and says
+which are missing.
+
+The patch moves the bridge to a current whatsmeow, since WhatsApp refuses the
+version upstream pins, and binds its REST API to `127.0.0.1` rather than every
+interface. Re-running the step takes the patch off, pulls, and puts it back.
+
+The bridge runs as the `whatsapp-bridge` systemd user service. It only starts
+once it is linked to your phone, so the first time:
+
+```bash
+cd ~/workspace/whatsapp-mcp/whatsapp-bridge
+./whatsapp-bridge                      # scan the QR code: WhatsApp → Linked devices
+# wait until it says it's connected, then Ctrl-C
+systemctl --user start whatsapp-bridge
+```
+
+The session expires about every 20 days. When it does, the MCP tools stop
+seeing new messages, and `journalctl --user -u whatsapp-bridge` shows it was
+logged out. Scan again the same way, stopping the service first:
+
+```bash
+systemctl --user stop whatsapp-bridge
+cd ~/workspace/whatsapp-mcp/whatsapp-bridge && ./whatsapp-bridge
+systemctl --user start whatsapp-bridge
+```
+
+`whatsapp-bridge/store/` holds the session and your message history as SQLite
+files. It stays outside this repo, and `.gitignore` blocks `*.db` and
+`whatsapp-bridge/store/` in case a copy ever lands here. The server is
+registered with `claude mcp add`; `~/.claude.json` is never copied in.
 
 ## Notes
 

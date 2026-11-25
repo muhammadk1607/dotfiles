@@ -1,0 +1,17 @@
+# Installed by scripts/setup-whatsapp-mcp.sh into ~/.config/systemd/user/
+# The script rewrites %h/workspace/whatsapp-mcp when WHATSAPP_MCP_DIR is set.
+[Unit]
+Description=WhatsApp bridge for the WhatsApp MCP server
+
+[Service]
+# The bridge keeps its session and messages in ./store, relative to here.
+WorkingDirectory=%h/workspace/whatsapp-mcp/whatsapp-bridge
+ExecStart=%h/workspace/whatsapp-mcp/whatsapp-bridge/whatsapp-bridge
+Restart=on-failure
+# The bridge exits 0 even when it fails to connect (e.g. logging in before the
+# network is up), which on-failure alone wouldn't restart.
+RestartForceExitStatus=0
+RestartSec=10
+
+[Install]
+WantedBy=default.target

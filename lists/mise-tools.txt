@@ -17,3 +17,5 @@ supabase@latest
 pnpm@latest
 # Bitwarden CLI (`bw`) — backs up and restores ~/.ssh. See scripts/backup-ssh.sh.
 bitwarden@latest
+# Go — builds the WhatsApp MCP bridge. See scripts/setup-whatsapp-mcp.sh.
+go@latest

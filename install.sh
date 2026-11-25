@@ -26,6 +26,7 @@ STEPS=(
 	"portainer:install-portainer.sh"
 	"vscode:install-vscode.sh"
 	"claude:install-claude.sh"
+	"whatsapp:setup-whatsapp-mcp.sh"
 	"antigravity:install-antigravity.sh"
 	"flatpak:install-flatpak.sh"
 	"apps:install-apps.sh"
